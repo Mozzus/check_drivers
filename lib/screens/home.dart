@@ -446,20 +446,23 @@ class _CardItem extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Container(
-                height: 90,
-                width: 102,
-                decoration: BoxDecoration(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Container(
+                  height: 90,
+                  width: 102,
+                  decoration: BoxDecoration(
                     color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(8.0)),
-                child: item == null
-                    ? null
-                    : (item.currentPhoto == null
-                        ? null
-                        : Image.file(
-                            File(item.currentPhoto.path),
-                            fit: BoxFit.fitWidth,
-                          )),
+                  ),
+                  child: item == null
+                      ? null
+                      : (item.currentPhoto == null
+                          ? null
+                          : Image.file(
+                              File(item.currentPhoto.path),
+                              fit: BoxFit.fitWidth,
+                            )),
+                ),
               ),
             )
           ],

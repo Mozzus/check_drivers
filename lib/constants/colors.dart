@@ -9,4 +9,5 @@ class ColorConstants {
   static const greenColor = Color(0xFF089082);
   static const orangeColor = Color(0xFFED9254);
   static const greyColor = Color(0xFF9D9EA8);
+  static const tertiaryColor = Color(0xFFF6F2EF);
 }

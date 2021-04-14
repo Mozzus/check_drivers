@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:check_drivers/common_widgets/choose_direction.dart';
 import 'package:check_drivers/elements/card.dart';
 import 'package:check_drivers/screens/scan_screens/scan.dart';
@@ -72,21 +74,34 @@ class ConfirmScan extends StatelessWidget {
               bottom: 92,
               child: ChooseDirection(),
             ),
+            // Positioned(
+            //   left: 20,
+            //   bottom: 152,
+            //   child: Consumer<CardModel>(builder: (context, cart, child) {
+            //     return Text(
+            //       cart.getLength().toString(),
+            //       style: TextStyle(fontSize: 14, color: Colors.black),
+            //     );
+            //   }),
+            // ),
+            //
             Positioned(
               left: 20,
               bottom: 152,
-              child: Consumer<CardModel>(builder: (context, cart, child) {
-                return Text(
-                  cart.getLength().toString(),
-                  style: TextStyle(fontSize: 14, color: Colors.black),
-                );
-              }),
+              child: Text(
+                'Какое действие на фото?',
+                style: TextStyle(fontSize: 14, color: Colors.black),
+              ),
             ),
             Positioned(
               bottom: 190,
               child: Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
+                child: Image.file(
+                  File(MainScan.faceFile.path),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ],

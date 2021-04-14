@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:check_drivers/common_widgets/choose_scan.dart';
+import 'package:check_drivers/constants/colors.dart';
 import 'package:check_drivers/elements/card.dart';
 import 'package:check_drivers/elements/item.dart';
 import 'package:check_drivers/screens/scan_screens/scan_human.dart';
+import 'package:check_drivers/screens/scan_screens/scan_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
@@ -16,6 +18,7 @@ import 'confirm_scan_screen.dart';
 class MainScan extends StatefulWidget {
   static File faceFile;
   static bool hasFace = false;
+  static Future<void> isReady;
 
   MainScan({this.child, Key key}) : super(key: key);
 
@@ -32,6 +35,7 @@ class _MainScanState extends State with WidgetsBindingObserver {
   int _selected = 0;
   XFile photoFile;
   File checkFaceFile;
+  bool _isTapped = false;
 
   @override
   void initState() {
@@ -43,6 +47,12 @@ class _MainScanState extends State with WidgetsBindingObserver {
   void dispose() {
     _controller?.dispose();
     super.dispose();
+  }
+
+  void _setTapped() {
+    setState(() {
+      _isTapped = !_isTapped;
+    });
   }
 
   Widget _cameraView() {
@@ -102,7 +112,7 @@ class _MainScanState extends State with WidgetsBindingObserver {
         await FlutterNativeImage.cropImage(photoFile.path, 300, 130, 230, 180);
     MainScan.faceFile =
         await FlutterNativeImage.cropImage(photoFile.path, 50, 60, 600, 350);
-    pickFace();
+    // pickFace();
   }
 
   Future<void> pickFace() async {
@@ -158,32 +168,50 @@ class _MainScanState extends State with WidgetsBindingObserver {
               right: 20,
               child: Container(
                 height: 50,
-                child: TextButton(
-                  child: Text('Сделать фото'),
-                  style: TextButton.styleFrom(
-                    textStyle: TextStyle(fontSize: 16),
-                    primary: Color(0xFF1B1512),
-                    backgroundColor: Color(0xFFF0C332),
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    _takePhoto(context);
-                    item.add(new Item());
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ConfirmScan()));
-                    // if (MainScan.hasFace == false)
-                    //   showAlertDialog(context);
-                    // else {
-                    // item.currentPhoto(MainScan.faceFile);
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => HomeScreen()));
-                    // }
-                  },
-                ),
+                child: _isTapped
+                    ? TextButton(
+                        child: Text('Сделать фото'),
+                        style: TextButton.styleFrom(
+                          textStyle: TextStyle(fontSize: 16),
+                          primary: Color(0xFF1B1512),
+                          backgroundColor: ColorConstants.tertiaryColor,
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                        onPressed: () {})
+                    : TextButton(
+                        child: Text('Сделать фото'),
+                        style: TextButton.styleFrom(
+                          textStyle: TextStyle(fontSize: 16),
+                          primary: Color(0xFF1B1512),
+                          backgroundColor: Color(0xFFF0C332),
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          Future<void> isReady = _takePhoto(context);
+                          _setTapped();
+                          isReady.then((_) {
+                            item.add(new Item());
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ConfirmScan()));
+                          });
+
+                          // if (MainScan.hasFace == false)
+                          //   showAlertDialog(context);
+                          // else {
+                          // item.currentPhoto(MainScan.faceFile);
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => HomeScreen()));
+                          // }
+                        },
+                      ),
               ),
             ),
             Positioned(
@@ -200,27 +228,26 @@ class _MainScanState extends State with WidgetsBindingObserver {
             ),
             // Positioned(
             //   bottom: 190,
-            //   child: Container(
-            //     height: MediaQuery.of(context).size.height,
-            //     width: MediaQuery.of(context).size.width,
-            //     child: _cameraView(),
+            //   child: Stack(
+            //     children: [
+            //       Container(
+            //         height: MediaQuery.of(context).size.height,
+            //         width: MediaQuery.of(context).size.width,
+            //         child: _cameraView(),
+            //       ),
+            //       Container(
+            //         child: ScanHumam(),
+            //       ),
+            //     ],
             //   ),
             // ),
             Positioned(
               bottom: 190,
-              child: Stack(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: _cameraView(),
-                  ),
-                  Container(
-                    child: ScanHumam(),
-                  ),
-                ],
-              ),
-            ),
+              child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: QRScan()),
+            )
           ],
         ));
   }
