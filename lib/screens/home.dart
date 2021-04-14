@@ -4,6 +4,7 @@ import 'package:check_drivers/constants/colors.dart';
 import 'package:check_drivers/constants/my_icons_icons.dart';
 import 'package:check_drivers/elements/card.dart';
 import 'package:check_drivers/elements/item.dart';
+import 'package:check_drivers/screens/card_screen.dart';
 import 'package:check_drivers/screens/scan_screens/scan.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -322,150 +323,156 @@ class _CardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var item = context.select<CardModel, Item>(
         (value) => value.getLength() == 0 ? null : value.getById(id));
-    return Container(
-      margin: EdgeInsets.only(left: 20, right: 20, top: 16),
-      decoration: BoxDecoration(
-        color: ColorConstants.greenColor,
-        borderRadius: BorderRadius.circular(8.0),
-        gradient: new LinearGradient(
-            stops: [0.01, 0.01], colors: [Colors.red, Colors.white]),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Column(
-                              children: [
-                                Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    color: ColorConstants.homeBackground,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/images/camera.svg",
-                                    height: 20,
-                                    width: 20,
-                                    fit: BoxFit.none,
-                                  ),
-                                ),
-                                Image.asset(
-                                  "assets/images/line.png",
-                                  height: 18,
-                                  width: 2,
-                                ),
-                                Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    color: ColorConstants.homeBackground,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/images/pin.svg",
-                                    height: 20,
-                                    width: 20,
-                                    fit: BoxFit.none,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 16),
-                              height: 98,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => CardScreen()));
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 20, right: 20, top: 16),
+        decoration: BoxDecoration(
+          color: ColorConstants.greenColor,
+          borderRadius: BorderRadius.circular(8.0),
+          gradient: new LinearGradient(
+              stops: [0.01, 0.01], colors: [Colors.red, Colors.white]),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Column(
                                 children: [
-                                  Text(
-                                    id.toString(),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: ColorConstants.blackColor,
-                                      fontWeight: FontWeight.w600,
+                                  Container(
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: ColorConstants.homeBackground,
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 2.0),
-                                    child: Text(
-                                      "14:34:43 30/04",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: ColorConstants.greyColor,
-                                      ),
+                                    child: SvgPicture.asset(
+                                      "assets/images/camera.svg",
+                                      height: 20,
+                                      width: 20,
+                                      fit: BoxFit.none,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 20.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "13:45-17:43",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: ColorConstants.blackColor,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 2.0),
-                                          child: Text(
-                                            "01 мая 2021",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: ColorConstants.greyColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                  Image.asset(
+                                    "assets/images/line.png",
+                                    height: 18,
+                                    width: 2,
+                                  ),
+                                  Container(
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: ColorConstants.homeBackground,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/images/pin.svg",
+                                      height: 20,
+                                      width: 20,
+                                      fit: BoxFit.none,
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Container(
-                  height: 90,
-                  width: 102,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                  child: item == null
-                      ? null
-                      : (item.currentPhoto == null
-                          ? null
-                          : Image.file(
-                              File(item.currentPhoto.path),
-                              fit: BoxFit.fitWidth,
-                            )),
-                ),
+                              Container(
+                                margin: EdgeInsets.only(left: 16),
+                                height: 98,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      id.toString(),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: ColorConstants.blackColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 2.0),
+                                      child: Text(
+                                        "14:34:43 30/04",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: ColorConstants.greyColor,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 20.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "13:45-17:43",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: ColorConstants.blackColor,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 2.0),
+                                            child: Text(
+                                              "01 мая 2021",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: ColorConstants.greyColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                ],
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Container(
+                    height: 90,
+                    width: 102,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                    ),
+                    child: item == null
+                        ? null
+                        : (item.currentPhoto == null
+                            ? null
+                            : Image.file(
+                                File(item.currentPhoto.path),
+                                fit: BoxFit.fitWidth,
+                              )),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

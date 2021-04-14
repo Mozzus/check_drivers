@@ -167,7 +167,7 @@ class _MainScanState extends State with WidgetsBindingObserver {
               left: 20,
               right: 20,
               child: Container(
-                height: 50,
+                height: 56,
                 child: _isTapped
                     ? TextButton(
                         child: Text('Сделать фото'),

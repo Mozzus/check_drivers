@@ -40,13 +40,17 @@ class CardScreen extends StatelessWidget {
         body: Container(),
       ),
       previewChild: Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.only(left: 40, top: 30),
         decoration: BoxDecoration(
             color: ColorConstants.background,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(24))),
         child: Container(
-          child: Text("А354МК|185"),
+          child: Text(
+            'А354МК|185',
+            style: TextStyle(
+                fontSize: 28, color: Colors.black, fontWeight: FontWeight.w600),
+          ),
         ),
       ),
       expandedChild: Container(
@@ -63,7 +67,7 @@ class CardScreen extends StatelessWidget {
               left: 20,
               right: 20,
               child: Container(
-                height: 50,
+                height: 56,
                 child: TextButton(
                     child: Text('Обновить данные'),
                     style: TextButton.styleFrom(
