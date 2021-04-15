@@ -36,11 +36,15 @@ class _MainScanState extends State with WidgetsBindingObserver {
   XFile photoFile;
   File checkFaceFile;
   bool _isTapped = false;
+  bool _isHuman = true;
+  bool _isCar = false;
+  bool _isQr = false;
 
   @override
   void initState() {
     super.initState();
     setupCamera();
+    _isTapped = false;
   }
 
   @override
@@ -126,6 +130,30 @@ class _MainScanState extends State with WidgetsBindingObserver {
     if (!mounted) return;
   }
 
+  void _tapOnCar() {
+    setState(() {
+      _isCar = true;
+      _isHuman = false;
+      _isQr = false;
+    });
+  }
+
+  void _tapOnHuman() {
+    setState(() {
+      _isCar = false;
+      _isHuman = true;
+      _isQr = false;
+    });
+  }
+
+  void _tapOnQr() {
+    setState(() {
+      _isCar = false;
+      _isHuman = false;
+      _isQr = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var item = context.read<CardModel>();
@@ -194,7 +222,6 @@ class _MainScanState extends State with WidgetsBindingObserver {
                           Future<void> isReady = _takePhoto(context);
                           _setTapped();
                           isReady.then((_) {
-                            item.add(new Item());
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -216,7 +243,97 @@ class _MainScanState extends State with WidgetsBindingObserver {
             ),
             Positioned(
               bottom: 92,
-              child: ChooseScan(),
+              child: Container(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Container(
+                        height: 48,
+                        width: MediaQuery.of(context).size.width / 3 - 20,
+                        child: OutlinedButton(
+                          child: Text('Машина'),
+                          style: OutlinedButton.styleFrom(
+                              primary: Colors.black,
+                              backgroundColor: Color(0xFFF6F2EF),
+                              side: _isCar
+                                  ? BorderSide(
+                                      color: Color(0xFFF0C332), width: 1)
+                                  : BorderSide(
+                                      color: Color(0xFFF6F2EF), width: 1),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)))),
+                          onPressed: () {
+                            if (_isQr) {
+                              Future<void> x = setupCamera();
+                              x.then((value) {
+                                _tapOnCar();
+                              });
+                            }
+                            if (_isHuman) _tapOnCar();
+                            // item.changeItemType("Car");
+                          },
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Container(
+                        height: 48,
+                        width: MediaQuery.of(context).size.width / 3 - 20,
+                        child: OutlinedButton(
+                          child: Text('Человек'),
+                          style: OutlinedButton.styleFrom(
+                              primary: Colors.black,
+                              backgroundColor: Color(0xFFF6F2EF),
+                              side: _isHuman
+                                  ? BorderSide(
+                                      color: Color(0xFFF0C332), width: 1)
+                                  : BorderSide(
+                                      color: Color(0xFFF6F2EF), width: 1),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)))),
+                          onPressed: () {
+                            if (_isQr) {
+                              Future<void> x = setupCamera();
+                              x.then((value) {
+                                _tapOnHuman();
+                              });
+                            }
+                            if (_isCar) _tapOnHuman();
+                            // item.changeItemType("Driver");
+                          },
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 48,
+                      width: MediaQuery.of(context).size.width / 3 - 20,
+                      child: OutlinedButton(
+                        child: Text('QR'),
+                        style: OutlinedButton.styleFrom(
+                            primary: Colors.black,
+                            backgroundColor: Color(0xFFF6F2EF),
+                            side: _isQr
+                                ? BorderSide(color: Color(0xFFF0C332), width: 1)
+                                : BorderSide(
+                                    color: Color(0xFFF6F2EF), width: 1),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)))),
+                        onPressed: () {
+                          if (_isCar || _isHuman) {
+                            _controller?.dispose();
+                          }
+                          _tapOnQr();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             Positioned(
               left: 20,
@@ -226,28 +343,29 @@ class _MainScanState extends State with WidgetsBindingObserver {
                 style: TextStyle(fontSize: 14, color: Colors.black),
               ),
             ),
-            // Positioned(
-            //   bottom: 190,
-            //   child: Stack(
-            //     children: [
-            //       Container(
-            //         height: MediaQuery.of(context).size.height,
-            //         width: MediaQuery.of(context).size.width,
-            //         child: _cameraView(),
-            //       ),
-            //       Container(
-            //         child: ScanHumam(),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            Positioned(
-              bottom: 190,
-              child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  child: QRScan()),
-            )
+            _isQr == false
+                ? Positioned(
+                    bottom: 190,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          child: _cameraView(),
+                        ),
+                        Container(
+                          child: ScanHumam(),
+                        ),
+                      ],
+                    ),
+                  )
+                : Positioned(
+                    bottom: 190,
+                    child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        child: QRScan()),
+                  )
           ],
         ));
   }

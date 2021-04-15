@@ -23,7 +23,9 @@ class CardScreen extends StatelessWidget {
                     size: 15,
                     color: Colors.black,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ),
               Text(

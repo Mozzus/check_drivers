@@ -1,4 +1,5 @@
 import 'package:check_drivers/elements/card.dart';
+import 'package:check_drivers/screens/scan_screens/scan_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +40,7 @@ class _ChooseScan extends State<ChooseScan> {
   }
 
   Widget build(BuildContext context) {
-    // var item = context.read<CardModel>();
+    var item = context.read<CardModel>();
 
     return Container(
       child: Row(
@@ -60,7 +61,7 @@ class _ChooseScan extends State<ChooseScan> {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8)))),
                 onPressed: () {
-                  // item.changeItemType("Car");
+                  item.changeItemType("Car");
                   _tapOnCar();
                 },
               ),
@@ -82,7 +83,7 @@ class _ChooseScan extends State<ChooseScan> {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8)))),
                 onPressed: () {
-                  // item.changeItemType("Driver");
+                  item.changeItemType("Driver");
                   _tapOnHuman();
                 },
               ),
@@ -103,6 +104,8 @@ class _ChooseScan extends State<ChooseScan> {
                       borderRadius: BorderRadius.all(Radius.circular(8)))),
               onPressed: () {
                 _tapOnQr();
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => QRScan()));
               },
             ),
           ),

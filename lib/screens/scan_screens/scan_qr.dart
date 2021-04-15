@@ -69,6 +69,7 @@ class _QRScanState extends State<QRScan> {
           borderRadius: 0,
           borderLength: 0,
           borderWidth: 0,
+          cutOutBottomOffset: -130,
           cutOutSize: scanArea),
     );
   }

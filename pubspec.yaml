@@ -58,6 +58,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/images/home/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -74,9 +75,9 @@ flutter:
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter-Regular.ttf
-    - family:  MyIcons
+    - family:  MyFlutterApp
       fonts:
-        - asset: assets/fonts/MyIcons.ttf
+        - asset: assets/fonts/MyFlutterApp.ttf
 
   #
   # For details regarding fonts from package dependencies,
