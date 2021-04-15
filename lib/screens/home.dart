@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var card = context.watch<CardModel>();
-    // var item = context.read<CardModel>();
+    var item = context.read<CardModel>();
     return Scaffold(
       backgroundColor: ColorConstants.homeBackground,
       appBar: AppBar(
@@ -137,7 +137,7 @@ class HomeScreen extends StatelessWidget {
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(45)))),
                   onPressed: () {
-                    // item.add(new Item());
+                    item.add(new Item());
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => MainScan()));
                   },

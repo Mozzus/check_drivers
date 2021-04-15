@@ -99,7 +99,7 @@ class ConfirmScan extends StatelessWidget {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: Image.file(
-                  File(MainScan.faceFile.path),
+                  File(MainScan.faceFile?.path),
                   fit: BoxFit.cover,
                 ),
               ),

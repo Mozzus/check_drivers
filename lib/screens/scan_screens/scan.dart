@@ -10,6 +10,7 @@ import 'package:check_drivers/screens/scan_screens/scan_qr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:image_face/image_face.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,6 @@ class _MainScanState extends State with WidgetsBindingObserver {
   void initState() {
     super.initState();
     setupCamera();
-    _isTapped = false;
   }
 
   @override
@@ -221,21 +221,26 @@ class _MainScanState extends State with WidgetsBindingObserver {
                         onPressed: () {
                           Future<void> isReady = _takePhoto(context);
                           _setTapped();
-                          isReady.then((_) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ConfirmScan()));
-                          });
 
-                          // if (MainScan.hasFace == false)
-                          //   showAlertDialog(context);
-                          // else {
-                          // item.currentPhoto(MainScan.faceFile);
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => HomeScreen()));
+                          isReady.then((_) {
+                            Future.delayed(Duration(milliseconds: 2500), () {
+                              Future<void> pick = pickFace();
+                              pick.then((value) {
+                                if (MainScan.hasFace == false)
+                                  showAlertDialog(context);
+                                else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ConfirmScan()));
+                                }
+                              });
+                            });
+                          });
+                          Future<void> x =
+                              Future.delayed(Duration(milliseconds: 2500));
+                          x.then((value) => _setTapped());
+
                           // }
                         },
                       ),
@@ -371,67 +376,68 @@ class _MainScanState extends State with WidgetsBindingObserver {
   }
 }
 
-// showAlertDialog(BuildContext context) {
-//   var item = context.select<CardModel, Item>((value) => value.getById(0));
+showAlertDialog(BuildContext context) {
+  // var item = context.select<CardModel, Item>((value) => value.getById(0));
 
-//   Widget okButton = Container(
-//     height: 48,
-//     width: 300,
-//     child: TextButton(
-//       child: Text('Сделать новое фото'),
-//       style: TextButton.styleFrom(
-//         textStyle: TextStyle(fontSize: 16),
-//         primary: Color(0xFF1B1512),
-//         backgroundColor: Color(0xFFF0C332),
-//         shape: new RoundedRectangleBorder(
-//           borderRadius: BorderRadius.circular(8.0),
-//         ),
-//       ),
-//       onPressed: () {
-//         Navigator.pop(context);
-//       },
-//     ),
-//   );
+  Widget okButton = Container(
+    height: 48,
+    width: 300,
+    child: TextButton(
+      child: Text('Сделать новое фото'),
+      style: TextButton.styleFrom(
+        textStyle: TextStyle(fontSize: 16),
+        primary: Color(0xFF1B1512),
+        backgroundColor: Color(0xFFF0C332),
+        shape: new RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    ),
+  );
 
-//   // set up the AlertDialog
-//   AlertDialog alert = AlertDialog(
-//     insetPadding: EdgeInsets.only(left: 20, right: 20),
-//     titlePadding: EdgeInsets.only(top: 32),
-//     contentPadding: EdgeInsets.only(bottom: 17, top: 12),
-//     actionsPadding: EdgeInsets.only(
-//       left: 51.5,
-//       right: 51.5,
-//       bottom: 24,
-//     ),
-//     title: Center(
-//       child: SvgPicture.asset(
-//         "assets/images/smail.svg",
-//         height: 48,
-//         width: 48,
-//         fit: BoxFit.none,
-//       ),
-//     ),
-//     content: Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Text(
-//           "Лицо не обнаружено",
-//           style: TextStyle(fontSize: 16, color: ColorConstants.redColor),
-//         ),
-//       ],
-//     ),
-//     actions: [
-//       okButton,
-//     ],
-//   );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    insetPadding: EdgeInsets.only(left: 20, right: 20),
+    titlePadding: EdgeInsets.only(top: 32),
+    contentPadding: EdgeInsets.only(bottom: 17, top: 12),
+    actionsPadding: EdgeInsets.only(
+      left: 51.5,
+      right: 51.5,
+      bottom: 24,
+    ),
+    title: Center(
+      child: SvgPicture.asset(
+        "assets/images/smail.svg",
+        height: 48,
+        width: 48,
+        fit: BoxFit.none,
+      ),
+    ),
+    content: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Лицо не обнаружено",
+          style: TextStyle(fontSize: 16, color: ColorConstants.redColor),
+        ),
+      ],
+    ),
+    actions: [
+      okButton,
+    ],
+  );
 
-//   // show the dialog
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return Consumer<CardModel>(builder: (context, cart, child) {
-//         if (cart.getById(0).hasFace) return alert;
-//       });
-//     },
-//   );
-// }
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // return Consumer<CardModel>(builder: (context, cart, child) {
+      //   if (cart.getById(0).hasFace)
+      return alert;
+      // });
+    },
+  );
+}
