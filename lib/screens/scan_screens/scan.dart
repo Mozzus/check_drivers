@@ -1,10 +1,9 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:check_drivers/common_widgets/choose_scan.dart';
 import 'package:check_drivers/constants/colors.dart';
 import 'package:check_drivers/elements/card.dart';
-import 'package:check_drivers/elements/item.dart';
+import 'package:check_drivers/screens/scan_screens/scan_car.dart';
 import 'package:check_drivers/screens/scan_screens/scan_human.dart';
 import 'package:check_drivers/screens/scan_screens/scan_qr.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +90,7 @@ class _MainScanState extends State with WidgetsBindingObserver {
     try {
       photoFile = await _controller.takePicture();
       setState(() {
-        _showBottomSheet(context);
+        _modifyPhoto(context);
       });
     } on CameraException catch (e) {
       print(e);
@@ -111,15 +110,14 @@ class _MainScanState extends State with WidgetsBindingObserver {
     return controller;
   }
 
-  void _showBottomSheet(context) async {
+  void _modifyPhoto(context) async {
     checkFaceFile =
         await FlutterNativeImage.cropImage(photoFile.path, 300, 130, 230, 180);
     MainScan.faceFile =
         await FlutterNativeImage.cropImage(photoFile.path, 50, 60, 600, 350);
-    // pickFace();
   }
 
-  Future<void> pickFace() async {
+  Future<void> checkFace() async {
     try {
       print('start check');
       MainScan.hasFace = await ImageFace.hasFace(File(checkFaceFile.path));
@@ -208,42 +206,82 @@ class _MainScanState extends State with WidgetsBindingObserver {
                           ),
                         ),
                         onPressed: () {})
-                    : TextButton(
-                        child: Text('Сделать фото'),
-                        style: TextButton.styleFrom(
-                          textStyle: TextStyle(fontSize: 16),
-                          primary: Color(0xFF1B1512),
-                          backgroundColor: Color(0xFFF0C332),
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          Future<void> isReady = _takePhoto(context);
-                          _setTapped();
+                    : _isHuman
+                        ? TextButton(
+                            child: Text('Сделать фото'),
+                            style: TextButton.styleFrom(
+                              textStyle: TextStyle(fontSize: 16),
+                              primary: Color(0xFF1B1512),
+                              backgroundColor: Color(0xFFF0C332),
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                            onPressed: () {
+                              Future<void> isReady = _takePhoto(context);
+                              _setTapped();
 
-                          isReady.then((_) {
-                            Future.delayed(Duration(milliseconds: 2500), () {
-                              Future<void> pick = pickFace();
-                              pick.then((value) {
-                                if (MainScan.hasFace == false)
-                                  showAlertDialog(context);
-                                else {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ConfirmScan()));
-                                }
+                              isReady.then((_) {
+                                Future.delayed(Duration(milliseconds: 500), () {
+                                  Future<void> pick = checkFace();
+                                  pick.then((value) {
+                                    if (MainScan.hasFace == false)
+                                      noFaceMessage(context);
+                                    else {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ConfirmScan()));
+                                    }
+                                  });
+                                });
                               });
-                            });
-                          });
-                          Future<void> x =
-                              Future.delayed(Duration(milliseconds: 2500));
-                          x.then((value) => _setTapped());
+                              Future<void> x =
+                                  Future.delayed(Duration(milliseconds: 2500));
+                              x.then((value) => _setTapped());
+                            },
+                          )
+                        : _isCar
+                            ? TextButton(
+                                child: Text('Сделать фото'),
+                                style: TextButton.styleFrom(
+                                  textStyle: TextStyle(fontSize: 16),
+                                  primary: Color(0xFF1B1512),
+                                  backgroundColor: Color(0xFFF0C332),
+                                  shape: new RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Future<void> isReady = _takePhoto(context);
+                                  _setTapped();
 
-                          // }
-                        },
-                      ),
+                                  isReady.then((_) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ConfirmScan()));
+                                  });
+                                  Future<void> x = Future.delayed(
+                                      Duration(milliseconds: 2500));
+                                  x.then((value) => _setTapped());
+                                },
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                    color: Color(0xFFFEF4D5),
+                                    borderRadius: BorderRadius.circular(8.0)),
+                                child: Center(
+                                  child: Text(
+                                    "Наведите камеру на QR-код",
+                                    style: TextStyle(
+                                        color: ColorConstants.blackColor,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                              ),
               ),
             ),
             Positioned(
@@ -358,9 +396,13 @@ class _MainScanState extends State with WidgetsBindingObserver {
                           width: MediaQuery.of(context).size.width,
                           child: _cameraView(),
                         ),
-                        Container(
-                          child: ScanHumam(),
-                        ),
+                        _isHuman
+                            ? Container(
+                                child: ScanHumam(),
+                              )
+                            : Container(
+                                child: ScanCar(),
+                              ),
                       ],
                     ),
                   )
@@ -376,7 +418,7 @@ class _MainScanState extends State with WidgetsBindingObserver {
   }
 }
 
-showAlertDialog(BuildContext context) {
+noFaceMessage(BuildContext context) {
   // var item = context.select<CardModel, Item>((value) => value.getById(0));
 
   Widget okButton = Container(
@@ -398,7 +440,6 @@ showAlertDialog(BuildContext context) {
     ),
   );
 
-  // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     insetPadding: EdgeInsets.only(left: 20, right: 20),
     titlePadding: EdgeInsets.only(top: 32),
@@ -430,7 +471,6 @@ showAlertDialog(BuildContext context) {
     ],
   );
 
-  // show the dialog
   showDialog(
     context: context,
     builder: (BuildContext context) {

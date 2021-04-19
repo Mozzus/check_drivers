@@ -4,7 +4,7 @@ import 'package:check_drivers/elements/item.dart';
 import 'package:flutter/material.dart';
 
 class CardModel extends ChangeNotifier {
-  /// Internal, private state of the cart.
+  // Список карточек
   final List<Item> _items = [];
   int _position = 0;
 
@@ -23,12 +23,8 @@ class CardModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Adds [item] to cart. This and [removeAll] are the only ways to modify the
-  /// cart from the outside.
   void add(Item item) {
     _items.add(item);
-
-    // This call tells the widgets that are listening to this model to rebuild.
     notifyListeners();
   }
 
@@ -36,10 +32,8 @@ class CardModel extends ChangeNotifier {
     _items.removeAt(_position);
   }
 
-  /// Removes all items from the cart.
   void removeAll() {
     _items.clear();
-    // This call tells the widgets that are listening to this model to rebuild.
     notifyListeners();
   }
 }

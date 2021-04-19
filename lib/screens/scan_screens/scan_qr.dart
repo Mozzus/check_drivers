@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import 'confirm_scan_screen.dart';
+
 class QRScan extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _QRScanState();
@@ -13,8 +15,6 @@ class _QRScanState extends State<QRScan> {
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  // In order to get hot reload to work we need to pause the camera if the platform
-  // is android, or resume the camera if the platform is iOS.
   @override
   void reassemble() {
     super.reassemble();
@@ -27,40 +27,25 @@ class _QRScanState extends State<QRScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(child: _buildQrView(context)),
-
-      // Column(
-      //   children: <Widget>[
-      //     Expanded(flex: 4, child: _buildQrView(context)),
-      //     Expanded(
-      //       flex: 1,
-      //       child: FittedBox(
-      //         fit: BoxFit.contain,
-      //         child: Column(
-      //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //           children: <Widget>[
-      //             if (result != null)
-      //               Text(
-      //                   'Barcode Type: ${describeEnum(result.format)}   Data: ${result.code}')
-      //             else
-      //               Text('Scan a code'),
-      //           ],
-      //         ),
-      //       ),
-      //     )
-      //   ],
-      // ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: FittedBox(
+              fit: BoxFit.contain,
+            ),
+          ),
+          Expanded(flex: 2, child: _buildQrView(context)),
+        ],
+      ),
     );
   }
 
   Widget _buildQrView(BuildContext context) {
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
         ? 280.0
         : 430.0;
-    // To ensure the Scanner view is properly sizes after rotation
-    // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
@@ -69,7 +54,7 @@ class _QRScanState extends State<QRScan> {
           borderRadius: 0,
           borderLength: 0,
           borderWidth: 0,
-          cutOutBottomOffset: -130,
+          cutOutBottomOffset: 0,
           cutOutSize: scanArea),
     );
   }
@@ -81,6 +66,14 @@ class _QRScanState extends State<QRScan> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+        controller.pauseCamera();
+
+        Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ConfirmScan(qrCodeResult: result.code)))
+            .then((value) => controller.resumeCamera());
       });
     });
   }

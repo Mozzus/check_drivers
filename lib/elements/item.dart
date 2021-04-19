@@ -11,10 +11,6 @@ class Item {
   String _eventTime = "";
   String _name = "";
 
-  // Item(int id) {
-  //   _id = id.toString();
-  // }
-
   get isEnter => _isEnter;
   get id => _id;
   get direction => _direction;

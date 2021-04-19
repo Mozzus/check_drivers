@@ -1,32 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
-class ScanHumam extends StatefulWidget {
+class ScanCar extends StatefulWidget {
   @override
-  _ScanHumamState createState() => _ScanHumamState();
+  _ScanCarState createState() => _ScanCarState();
 }
 
-class _ScanHumamState extends State<ScanHumam> {
+class _ScanCarState extends State<ScanCar> {
   @override
   Widget build(BuildContext context) {
     return Stack(alignment: Alignment.bottomCenter, children: [
       CustomPaint(
         painter: HolePainter(),
         child: Container(),
-      ),
-      Container(
-        child: SvgPicture.asset(
-          "assets/images/plechi.svg",
-          width: MediaQuery.of(context).size.width,
-        ),
-      ),
-      Positioned(
-        bottom: 182,
-        child: Container(
-          child: SvgPicture.asset(
-            "assets/images/oval.svg",
-          ),
-        ),
       ),
       Container(
         height: MediaQuery.of(context).size.height,
@@ -43,8 +28,8 @@ class HolePainter extends CustomPainter {
     paint.color = Colors.black.withOpacity(0.5);
     var smallRect = Alignment.bottomCenter.inscribe(
         Size(500, 900), Rect.fromLTWH(size.width / 2 - 35, size.height, 20, 0));
-    var smallCircle = Alignment.bottomCenter.inscribe(
-        Size(250, 290), Rect.fromLTWH(size.width / 2, size.height - 197, 0, 0));
+    var recatangle = Alignment.bottomCenter.inscribe(
+        Size(320, 93), Rect.fromLTWH(size.width / 2, size.height - 227, 0, 0));
 
     canvas.drawPath(
       Path.combine(
@@ -52,7 +37,7 @@ class HolePainter extends CustomPainter {
         Path()
           ..addRRect(RRect.fromRectAndRadius(smallRect, Radius.circular(8))),
         Path()
-          ..addOval(smallCircle)
+          ..addRect(recatangle)
           ..close(),
       ),
       paint,

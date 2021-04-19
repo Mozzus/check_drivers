@@ -5,6 +5,7 @@ import 'package:check_drivers/constants/my_flutter_app_icons.dart';
 import 'package:check_drivers/elements/card.dart';
 import 'package:check_drivers/elements/item.dart';
 import 'package:check_drivers/screens/card_screen.dart';
+import 'package:check_drivers/screens/scan_screens/confirm_scan_screen.dart';
 import 'package:check_drivers/screens/scan_screens/scan.dart';
 import 'package:check_drivers/screens/settings.dart';
 import 'package:expandable/expandable.dart';
@@ -102,7 +103,14 @@ class HomeScreen extends StatelessWidget {
                     side: BorderSide(color: Color(0xFFF6F2EF), width: 1),
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(45)))),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ConfirmScan(
+                                nfcCertificate: "1",
+                              )));
+                },
               ),
             ),
             Padding(

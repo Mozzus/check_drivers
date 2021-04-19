@@ -38,6 +38,7 @@ dependencies:
   flutter_svg: ^0.21.0+1
   expandable: ^5.0.1
   draggable_bottom_sheet: ^0.1.2
+  nfc_in_flutter: ^2.0.5
 
 dev_dependencies:
   flutter_test:
