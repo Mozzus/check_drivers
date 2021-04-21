@@ -1,8 +1,10 @@
 import 'package:check_drivers/constants/colors.dart';
+import 'package:check_drivers/elements/card.dart';
 import 'package:check_drivers/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -18,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var card = context.read<CardModel>();
     return WillPopScope(
       onWillPop: () async => false,
       child: GestureDetector(
@@ -151,6 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     final form = formKey.currentState;
                                     if (form.validate()) {
                                       form.save();
+                                      card.get10cardsCheck();
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(

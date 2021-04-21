@@ -231,8 +231,9 @@ class _MainScanState extends State with WidgetsBindingObserver {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ConfirmScan()));
+                                              builder: (context) => ConfirmScan(
+                                                    faceResult: "1",
+                                                  )));
                                     }
                                   });
                                 });
@@ -261,8 +262,9 @@ class _MainScanState extends State with WidgetsBindingObserver {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                ConfirmScan()));
+                                            builder: (context) => ConfirmScan(
+                                                  carResult: "1",
+                                                )));
                                   });
                                   Future<void> x = Future.delayed(
                                       Duration(milliseconds: 2500));

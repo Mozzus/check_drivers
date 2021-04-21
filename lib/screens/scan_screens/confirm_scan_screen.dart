@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:check_drivers/common_widgets/choose_direction.dart';
 import 'package:check_drivers/constants/colors.dart';
 import 'package:check_drivers/elements/card.dart';
+import 'package:check_drivers/elements/models/item.dart';
 import 'package:check_drivers/screens/scan_screens/scan.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
@@ -13,8 +13,15 @@ import '../home.dart';
 class ConfirmScan extends StatefulWidget {
   final String qrCodeResult;
   final String nfcCertificate;
+  final String faceResult;
+  final String carResult;
 
-  ConfirmScan({Key key, this.qrCodeResult, this.nfcCertificate})
+  ConfirmScan(
+      {Key key,
+      this.qrCodeResult,
+      this.nfcCertificate,
+      this.faceResult,
+      this.carResult})
       : super(key: key);
 
   @override
@@ -23,6 +30,22 @@ class ConfirmScan extends StatefulWidget {
 
 class _ConfirmScanState extends State<ConfirmScan> {
   String certificate;
+  bool _isEnter = true;
+  bool _isExit = false;
+
+  void _tapOnExit() {
+    setState(() {
+      _isExit = true;
+      _isEnter = false;
+    });
+  }
+
+  void _tapOnEnter() {
+    setState(() {
+      _isExit = false;
+      _isEnter = true;
+    });
+  }
 
   Future<void> startScaning() async {
     NDEFMessage message = await NFC.readNDEF(once: true).first;
@@ -61,7 +84,6 @@ class _ConfirmScanState extends State<ConfirmScan> {
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    if (item.getLength() != 0) item.removeLastItem();
                     Navigator.pop(context);
                   },
                 ),
@@ -97,30 +119,92 @@ class _ConfirmScanState extends State<ConfirmScan> {
                     ),
                   ),
                   onPressed: () {
-                    item.setImageToCard(
-                      MainScan.faceFile,
-                    );
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                    Item cardItem = new Item();
+                    if (_isEnter)
+                      cardItem.isEnter = true;
+                    else
+                      cardItem.isEnter = false;
+                    if (widget.faceResult != null) cardItem.type = "Driver";
+                    if (widget.carResult != null) cardItem.type = "Car";
+                    final bytes =
+                        File(MainScan.faceFile.path).readAsBytesSync();
+                    // cardItem.image = cardItem.base64Encode(bytes);
+                    cardItem.image = "awawdawdaw";
+                    item.add(cardItem);
+                    Future.delayed(Duration(milliseconds: 1000)).then((value) {
+                      item.setImageToCard(
+                        MainScan.faceFile,
+                      );
+                      item.postFaceCarCheck(item.getLength() - 1, cardItem.type,
+                          cardItem.direction, cardItem.image);
+
+                      // item.changeState();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()));
+                    });
                   },
                 ),
               ),
             ),
             Positioned(
               bottom: 92,
-              child: ChooseDirection(),
+              child: Container(
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0, left: 10),
+                      child: Container(
+                        height: 48,
+                        width: MediaQuery.of(context).size.width / 2 - 25,
+                        child: OutlinedButton(
+                          child: Text('Выезд'),
+                          style: OutlinedButton.styleFrom(
+                              primary: Colors.black,
+                              backgroundColor: Color(0xFFF6F2EF),
+                              side: _isExit
+                                  ? BorderSide(
+                                      color: Color(0xFFF0C332), width: 1)
+                                  : BorderSide(
+                                      color: Color(0xFFF6F2EF), width: 1),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)))),
+                          onPressed: () {
+                            _tapOnExit();
+                          },
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Container(
+                        height: 48,
+                        width: MediaQuery.of(context).size.width / 2 - 25,
+                        child: OutlinedButton(
+                          child: Text('Въезд'),
+                          style: OutlinedButton.styleFrom(
+                              primary: Colors.black,
+                              backgroundColor: Color(0xFFF6F2EF),
+                              side: _isEnter
+                                  ? BorderSide(
+                                      color: Color(0xFFF0C332), width: 1)
+                                  : BorderSide(
+                                      color: Color(0xFFF6F2EF), width: 1),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)))),
+                          onPressed: () {
+                            _tapOnEnter();
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            // Positioned(
-            //   left: 20,
-            //   bottom: 152,
-            //   child: Consumer<CardModel>(builder: (context, cart, child) {
-            //     return Text(
-            //       cart.getLength().toString(),
-            //       style: TextStyle(fontSize: 14, color: Colors.black),
-            //     );
-            //   }),
-            // ),
-            //
             Positioned(
               left: 20,
               bottom: 152,

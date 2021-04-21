@@ -1,11 +1,16 @@
 import 'package:check_drivers/constants/colors.dart';
+import 'package:check_drivers/elements/card.dart';
 import 'package:check_drivers/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
   final String ip = "172.172.1.128";
   @override
   Widget build(BuildContext context) {
+    var item2 = context.read<CardModel>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();

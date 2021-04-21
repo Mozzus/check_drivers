@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Check Documents App',
         theme: ThemeData(fontFamily: "Inter"),
-        home: HomeScreen(),
+        home: LoginScreen(),
       ),
     );
   }

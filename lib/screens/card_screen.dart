@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:check_drivers/constants/colors.dart';
+import 'package:check_drivers/elements/card.dart';
 import 'package:flutter/material.dart';
 import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 class CardScreen extends StatelessWidget {
-  CardScreen({Key key}) : super(key: key);
+  final int id;
+  CardScreen({Key key, this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var item = context.read<CardModel>();
     return Scaffold(
         body: DraggableBottomSheet(
       blurBackground: false,
@@ -39,7 +45,16 @@ class CardScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
         ),
-        body: Container(),
+        body: Container(
+          child: item == null
+              ? null
+              : (item.getById(id).currentPhoto == null
+                  ? null
+                  : Image.file(
+                      File(item.getById(id).currentPhoto.path),
+                      fit: BoxFit.fitWidth,
+                    )),
+        ),
       ),
       previewChild: Container(
         padding: EdgeInsets.only(left: 40, top: 30),

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:check_drivers/constants/colors.dart';
 import 'package:check_drivers/constants/my_flutter_app_icons.dart';
 import 'package:check_drivers/elements/card.dart';
-import 'package:check_drivers/elements/item.dart';
+import 'package:check_drivers/elements/models/item.dart';
 import 'package:check_drivers/screens/card_screen.dart';
 import 'package:check_drivers/screens/scan_screens/confirm_scan_screen.dart';
 import 'package:check_drivers/screens/scan_screens/scan.dart';
@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var card = context.watch<CardModel>();
-    var item = context.read<CardModel>();
+
     return Scaffold(
       backgroundColor: ColorConstants.homeBackground,
       appBar: AppBar(
@@ -145,7 +145,6 @@ class HomeScreen extends StatelessWidget {
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(45)))),
                   onPressed: () {
-                    item.add(new Item());
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => MainScan()));
                   },
@@ -340,7 +339,11 @@ class _CardItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CardScreen()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => CardScreen(
+                      id: id,
+                    )));
       },
       child: Container(
         margin: EdgeInsets.only(left: 20, right: 20, top: 16),
@@ -416,48 +419,101 @@ class _CardItem extends StatelessWidget {
                                     //   ),
                                     //   textAlign: TextAlign.start,
                                     // ),
-                                    SvgPicture.asset(
-                                      "assets/images/home/loading.svg",
-                                      fit: BoxFit.none,
-                                    ),
+
+                                    Consumer<CardModel>(
+                                        builder: (context, card, child) {
+                                      return card.getState() == true
+                                          ? Text(
+                                              card.getById(id).statusResult,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black),
+                                            )
+                                          : SvgPicture.asset(
+                                              "assets/images/home/loading.svg",
+                                              fit: BoxFit.none,
+                                            );
+                                    }),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 2.0),
                                       child: Text(
-                                        "14:34:43 30/04",
+                                        item.direction,
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: ColorConstants.greyColor,
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "13:45-17:43",
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              color: ColorConstants.blackColor,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 2.0),
-                                            child: Text(
-                                              "01 мая 2021",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: ColorConstants.greyColor,
+                                    Consumer<CardModel>(
+                                        builder: (context, card, child) {
+                                      return card.getState() == true
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 20.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    card.getById(id).passTime,
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: ColorConstants
+                                                          .blackColor,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 2.0),
+                                                    child: Text(
+                                                      card.getById(id).passDate,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: ColorConstants
+                                                            .greyColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                            )
+                                          : Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 20.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Запрос",
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: ColorConstants
+                                                          .blackColor,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 2.0),
+                                                    child: Text(
+                                                      "в обработке",
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: ColorConstants
+                                                            .greyColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                    }),
                                   ],
                                 ),
                               ),
@@ -470,7 +526,7 @@ class _CardItem extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(3.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Container(
