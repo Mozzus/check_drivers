@@ -32,6 +32,9 @@ class _ConfirmScanState extends State<ConfirmScan> {
   String certificate;
   bool _isEnter = true;
   bool _isExit = false;
+  List<String> parseQR;
+  String numberOfCar;
+  String numberOfDoc;
 
   void _tapOnExit() {
     setState(() {
@@ -57,7 +60,7 @@ class _ConfirmScanState extends State<ConfirmScan> {
   @override
   void initState() {
     super.initState();
-    // Check if the device supports NFC reading
+    // Проверка на наличие NFC
     NFC.isNDEFSupported.then((bool isSupported) {
       setState(() {
         if (widget.nfcCertificate != null) {
@@ -127,22 +130,37 @@ class _ConfirmScanState extends State<ConfirmScan> {
                       cardItem.isEnter = false;
                     if (widget.faceResult != null) cardItem.type = "Driver";
                     if (widget.carResult != null) cardItem.type = "Car";
-                    final bytes =
-                        File(MainScan.faceFile.path).readAsBytesSync();
+                    // final bytes =
+                    //     File(MainScan.faceFile.path).readAsBytesSync();
                     // cardItem.image = cardItem.base64Encode(bytes);
-                    cardItem.image = "awawdawdaw";
+                    // cardItem.image = "awawdawdaw";
                     item.add(cardItem);
-                    Future.delayed(Duration(milliseconds: 1000)).then((value) {
-                      item.setImageToCard(MainScan.faceFile, cardItem);
-                      item.postFaceCarCheck(item.getLength() - 1, cardItem.type,
-                          cardItem.direction, cardItem.image);
-
-                      // item.changeState();
+                    if (widget.qrCodeResult != null) {
+                      Item cardItem2 = new Item();
+                      item.add(cardItem2);
+                      parseQR = widget.qrCodeResult.split(", ");
+                      numberOfCar = parseQR[0];
+                      numberOfDoc = parseQR[1];
+                      item.postCertificateCheck(item.getLength() - 1,
+                          numberOfCar, cardItem.direction);
+                      item.postCertificateCheck(item.getLength() - 2,
+                          numberOfDoc, cardItem2.direction);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => HomeScreen()));
-                    });
+                    } else {
+                      Future.delayed(Duration(milliseconds: 1000))
+                          .then((value) {
+                        item.setImageToCard(MainScan.faceFile, cardItem);
+                        item.postFaceCarCheck(item.getLength() - 1,
+                            cardItem.type, cardItem.direction, cardItem.image);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()));
+                      });
+                    }
                   },
                 ),
               ),

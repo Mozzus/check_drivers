@@ -54,19 +54,25 @@ class HomeScreen extends StatelessWidget {
         toolbarHeight: 50,
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        physics: ScrollPhysics(),
-        child: Column(
-          children: <Widget>[
-            InfoCard(),
-            ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              reverse: true,
-              shrinkWrap: true,
-              itemCount: card.getLength(),
-              itemBuilder: (context, position) => _CardItem(position),
-            ),
-          ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          card.get10cardsCheck();
+          return null;
+        },
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: <Widget>[
+              InfoCard(),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                reverse: true,
+                shrinkWrap: true,
+                itemCount: card.getLength(),
+                itemBuilder: (context, position) => _CardItem(position),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(
@@ -472,7 +478,11 @@ class _CardItem extends StatelessWidget {
                                               padding: const EdgeInsets.only(
                                                   top: 2.0),
                                               child: Text(
-                                                card.getById(id).currentDate,
+                                                card.getById(id).currentDate +
+                                                    " " +
+                                                    card
+                                                        .getById(id)
+                                                        .currentTime,
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color:
@@ -631,7 +641,7 @@ class _CardItem extends StatelessWidget {
                                               padding: const EdgeInsets.only(
                                                   top: 2.0),
                                               child: Text(
-                                                item.direction,
+                                                item.passDate,
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color:

@@ -43,17 +43,19 @@ class CardModel extends ChangeNotifier {
       Request.get10cards().then((value) {
         _listUnits = value;
         for (CardUnit x in _listUnits.list) {
-          _items.add(new Item());
-          getById(_items.length - 1).passDate = x.passDate;
-          getById(_items.length - 1).passTime = x.passTime;
-          getById(_items.length - 1).currentTime = x.currentTime;
-          getById(_items.length - 1).currentDate = x.currentDate;
-          getById(_items.length - 1).idOnServer = x.id;
-          getById(_items.length - 1).statusResult = x.status.statusText;
-          getById(_items.length - 1).statusColor = x.status.statusColor;
-          getById(_items.length - 1).name = x.name;
-          getById(_items.length - 1).type = x.type;
-          getById(_items.length - 1).isGotFromAPI = true;
+          if (!_items.contains(x.id)) {
+            _items.add(new Item());
+            getById(_items.length - 1).passDate = x.passDate;
+            getById(_items.length - 1).passTime = x.passTime;
+            getById(_items.length - 1).currentTime = x.currentTime;
+            getById(_items.length - 1).currentDate = x.currentDate;
+            getById(_items.length - 1).idOnServer = x.id;
+            getById(_items.length - 1).statusResult = x.status.statusText;
+            getById(_items.length - 1).statusColor = x.status.statusColor;
+            getById(_items.length - 1).name = x.name;
+            getById(_items.length - 1).type = x.type;
+            getById(_items.length - 1).isGotFromAPI = true;
+          }
         }
 
         // final decodedBytes = base64Decode(_unit.image);
@@ -67,7 +69,46 @@ class CardModel extends ChangeNotifier {
 
   void getCurrentCardCheck(int id, String idOnServer) {
     Future.delayed(Duration(milliseconds: 1000)).then((value) {
-      Request.getCurrentCard(idOnServer).then((value) {
+      if (getById(id).type == "Driver") {
+        Request.getCurrentDriverCard(idOnServer).then((value) {
+          _unit = value;
+          getById(id).passDate = _unit.passDate;
+          getById(id).passTime = _unit.passTime;
+          getById(id).currentTime = _unit.currentTime;
+          getById(id).currentDate = _unit.currentDate;
+          getById(id).statusResult = _unit.status.statusText;
+          getById(id).statusColor = _unit.status.statusColor;
+          // final decodedBytes = base64Decode(_unit.image);
+          // var file = File("1.png");
+          // file.writeAsBytesSync(decodedBytes);
+          // getById(id).currentPhoto = file;
+          getById(id).isGotFromAPI = true;
+          notifyListeners();
+        });
+      } else {
+        Request.getCurrentCarCard(idOnServer).then((value) {
+          _unit = value;
+          getById(id).passDate = _unit.passDate;
+          getById(id).passTime = _unit.passTime;
+          getById(id).currentTime = _unit.currentTime;
+          getById(id).currentDate = _unit.currentDate;
+          getById(id).statusResult = _unit.status.statusText;
+          getById(id).statusColor = _unit.status.statusColor;
+          // final decodedBytes = base64Decode(_unit.image);
+          // var file = File("1.png");
+          // file.writeAsBytesSync(decodedBytes);
+          // getById(id).currentPhoto = file;
+          getById(id).isGotFromAPI = true;
+          notifyListeners();
+        });
+      }
+    });
+  }
+
+  void postCertificateCheck(int id, String certificate, String direction,
+      [String photo]) {
+    Future.delayed(Duration(milliseconds: 1000)).then((value) {
+      Request.postQRCertificate(certificate, direction).then((value) {
         _unit = value;
         getById(id).passDate = _unit.passDate;
         getById(id).passTime = _unit.passTime;

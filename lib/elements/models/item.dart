@@ -90,4 +90,10 @@ class Item {
 
   String base64Encode(List<int> bytes) => base64.encode(bytes);
   Uint8List base64Decode(String source) => base64.decode(source);
+
+  @override
+  bool operator ==(Object other) =>
+      other is Item && other.idOnServer == idOnServer;
+  @override
+  int get hashCode => idOnServer.hashCode;
 }

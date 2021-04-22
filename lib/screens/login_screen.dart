@@ -154,7 +154,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     final form = formKey.currentState;
                                     if (form.validate()) {
                                       form.save();
-                                      card.get10cardsCheck ();
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
