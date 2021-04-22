@@ -120,6 +120,7 @@ class _ConfirmScanState extends State<ConfirmScan> {
                   ),
                   onPressed: () {
                     Item cardItem = new Item();
+                    cardItem.isGotFromAPI = false;
                     if (_isEnter)
                       cardItem.isEnter = true;
                     else
@@ -132,9 +133,7 @@ class _ConfirmScanState extends State<ConfirmScan> {
                     cardItem.image = "awawdawdaw";
                     item.add(cardItem);
                     Future.delayed(Duration(milliseconds: 1000)).then((value) {
-                      item.setImageToCard(
-                        MainScan.faceFile,
-                      );
+                      item.setImageToCard(MainScan.faceFile, cardItem);
                       item.postFaceCarCheck(item.getLength() - 1, cardItem.type,
                           cardItem.direction, cardItem.image);
 

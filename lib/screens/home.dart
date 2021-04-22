@@ -61,6 +61,7 @@ class HomeScreen extends StatelessWidget {
             InfoCard(),
             ListView.builder(
               physics: NeverScrollableScrollPhysics(),
+              reverse: true,
               shrinkWrap: true,
               itemCount: card.getLength(),
               itemBuilder: (context, position) => _CardItem(position),
@@ -328,6 +329,9 @@ class InfoCard extends StatelessWidget {
   }
 }
 
+//
+// Карточка
+//
 class _CardItem extends StatelessWidget {
   final int id;
 
@@ -345,23 +349,30 @@ class _CardItem extends StatelessWidget {
                       id: id,
                     )));
       },
-      child: Container(
-        margin: EdgeInsets.only(left: 20, right: 20, top: 16),
-        decoration: BoxDecoration(
-          color: ColorConstants.greenColor,
-          borderRadius: BorderRadius.circular(8.0),
-          gradient: new LinearGradient(
-              stops: [0.01, 0.01],
-              colors: [ColorConstants.greyColor, Colors.white]),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Row(
+      child: Consumer<CardModel>(builder: (context, card, child) {
+        return item.isGotFromAPI
+            ?
+
+            //
+            // Карточка полученная от сервера
+            //
+            Container(
+                margin: EdgeInsets.only(left: 20, right: 20, top: 16),
+                decoration: BoxDecoration(
+                  color: ColorConstants.greenColor,
+                  borderRadius: BorderRadius.circular(8.0),
+                  gradient: new LinearGradient(stops: [
+                    0.01,
+                    0.01
+                  ], colors: [
+                    Color(int.parse(card.getById(id).statusColor)),
+                    Colors.white
+                  ]),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         children: [
@@ -369,85 +380,107 @@ class _CardItem extends StatelessWidget {
                             children: [
                               Column(
                                 children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: ColorConstants.homeBackground,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "assets/images/home/camera_grey.svg",
-                                      height: 20,
-                                      width: 20,
-                                      fit: BoxFit.none,
-                                    ),
-                                  ),
-                                  Image.asset(
-                                    "assets/images/home/line.png",
-                                    height: 18,
-                                    width: 2,
-                                  ),
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: ColorConstants.homeBackground,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "assets/images/home/pin_grey.svg",
-                                      height: 20,
-                                      width: 20,
-                                      fit: BoxFit.none,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 16),
-                                height: 98,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Text(
-                                    //   id.toString(),
-                                    //   style: TextStyle(
-                                    //     fontSize: 16,
-                                    //     color: ColorConstants.blackColor,
-                                    //     fontWeight: FontWeight.w600,
-                                    //   ),
-                                    //   textAlign: TextAlign.start,
-                                    // ),
-
-                                    Consumer<CardModel>(
-                                        builder: (context, card, child) {
-                                      return card.getState() == true
-                                          ? Text(
-                                              card.getById(id).statusResult,
+                                  Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  ColorConstants.homeBackground,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                            child: item.statusResult ==
+                                                    "Доступ разрешен"
+                                                ? SvgPicture.asset(
+                                                    "assets/images/home/camera_green.svg",
+                                                    height: 20,
+                                                    width: 20,
+                                                    fit: BoxFit.none,
+                                                  )
+                                                : item.statusResult ==
+                                                        "Доступ запрещен"
+                                                    ? SvgPicture.asset(
+                                                        "assets/images/home/camera_red.svg",
+                                                        height: 20,
+                                                        width: 20,
+                                                        fit: BoxFit.none,
+                                                      )
+                                                    : SvgPicture.asset(
+                                                        "assets/images/home/camera_yellow.svg",
+                                                        height: 20,
+                                                        width: 20,
+                                                        fit: BoxFit.none,
+                                                      ),
+                                          ),
+                                          Image.asset(
+                                            "assets/images/home/line.png",
+                                            height: 18,
+                                            width: 2,
+                                          ),
+                                          Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  ColorConstants.homeBackground,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                            child: item.statusResult ==
+                                                    "Доступ разрешен"
+                                                ? SvgPicture.asset(
+                                                    "assets/images/home/pin_green.svg",
+                                                    height: 20,
+                                                    width: 20,
+                                                    fit: BoxFit.none,
+                                                  )
+                                                : item.statusResult ==
+                                                        "Доступ запрещен"
+                                                    ? SvgPicture.asset(
+                                                        "assets/images/home/pin_red.svg",
+                                                        height: 20,
+                                                        width: 20,
+                                                        fit: BoxFit.none,
+                                                      )
+                                                    : SvgPicture.asset(
+                                                        "assets/images/home/pin_yellow.svg",
+                                                        height: 20,
+                                                        width: 20,
+                                                        fit: BoxFit.none,
+                                                      ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 16),
+                                        height: 98,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              card.getById(id).name,
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   color: Colors.black),
-                                            )
-                                          : SvgPicture.asset(
-                                              "assets/images/home/loading.svg",
-                                              fit: BoxFit.none,
-                                            );
-                                    }),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 2.0),
-                                      child: Text(
-                                        item.direction,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: ColorConstants.greyColor,
-                                        ),
-                                      ),
-                                    ),
-                                    Consumer<CardModel>(
-                                        builder: (context, card, child) {
-                                      return card.getState() == true
-                                          ? Padding(
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 2.0),
+                                              child: Text(
+                                                card.getById(id).currentDate,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color:
+                                                      ColorConstants.greyColor,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 20.0),
                                               child: Column(
@@ -479,8 +512,134 @@ class _CardItem extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                            )
-                                          : Padding(
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Container(
+                            height: 90,
+                            width: 102,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                            ),
+                            child: item == null
+                                ? null
+                                : (item.currentPhoto == null
+                                    ? null
+                                    : Image.file(
+                                        File(item.currentPhoto.path),
+                                        fit: BoxFit.fitWidth,
+                                      )),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            :
+            //
+            // Дефолтно серая карточка
+            //
+            Container(
+                margin: EdgeInsets.only(left: 20, right: 20, top: 16),
+                decoration: BoxDecoration(
+                  color: ColorConstants.greenColor,
+                  borderRadius: BorderRadius.circular(8.0),
+                  gradient: new LinearGradient(
+                      stops: [0.01, 0.01],
+                      colors: [ColorConstants.greyColor, Colors.white]),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  ColorConstants.homeBackground,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                            child: SvgPicture.asset(
+                                              "assets/images/home/camera_grey.svg",
+                                              height: 20,
+                                              width: 20,
+                                              fit: BoxFit.none,
+                                            ),
+                                          ),
+                                          Image.asset(
+                                            "assets/images/home/line.png",
+                                            height: 18,
+                                            width: 2,
+                                          ),
+                                          Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  ColorConstants.homeBackground,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                            child: SvgPicture.asset(
+                                              "assets/images/home/pin_grey.svg",
+                                              height: 20,
+                                              width: 20,
+                                              fit: BoxFit.none,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 16),
+                                        height: 98,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/images/home/loading.svg",
+                                              fit: BoxFit.none,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 2.0),
+                                              child: Text(
+                                                item.direction,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color:
+                                                      ColorConstants.greyColor,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 20.0),
                                               child: Column(
@@ -493,8 +652,6 @@ class _CardItem extends StatelessWidget {
                                                       fontSize: 14,
                                                       color: ColorConstants
                                                           .blackColor,
-                                                      fontWeight:
-                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                   Padding(
@@ -512,44 +669,44 @@ class _CardItem extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                            );
-                                    }),
-                                  ],
-                                ),
-                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
                             ],
                           )
                         ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Container(
+                            height: 90,
+                            width: 102,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                            ),
+                            child: item == null
+                                ? null
+                                : (item.currentPhoto == null
+                                    ? null
+                                    : Image.file(
+                                        File(item.currentPhoto.path),
+                                        fit: BoxFit.fitWidth,
+                                      )),
+                          ),
+                        ),
                       )
                     ],
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Container(
-                    height: 90,
-                    width: 102,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                    ),
-                    child: item == null
-                        ? null
-                        : (item.currentPhoto == null
-                            ? null
-                            : Image.file(
-                                File(item.currentPhoto.path),
-                                fit: BoxFit.fitWidth,
-                              )),
                   ),
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+              );
+      }),
     );
   }
 }

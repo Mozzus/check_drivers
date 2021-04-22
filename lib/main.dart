@@ -1,5 +1,4 @@
 import 'package:check_drivers/elements/card.dart';
-import 'package:check_drivers/screens/home.dart';
 import 'package:check_drivers/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

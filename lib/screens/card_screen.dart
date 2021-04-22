@@ -35,7 +35,7 @@ class CardScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                'АE 3822',
+                item.getById(id).name,
                 style: TextStyle(color: Colors.black, fontSize: 20),
               ),
             ],
@@ -64,7 +64,7 @@ class CardScreen extends StatelessWidget {
                 topLeft: Radius.circular(20), topRight: Radius.circular(24))),
         child: Container(
           child: Text(
-            'А354МК|185',
+            item.getById(id).name,
             style: TextStyle(
                 fontSize: 28, color: Colors.black, fontWeight: FontWeight.w600),
           ),
@@ -95,14 +95,17 @@ class CardScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    onPressed: () {}),
+                    onPressed: () {
+                      // Метод обновления данных
+                      item.getCurrentCardCheck(id, item.getById(id).idOnServer);
+                    }),
               ),
             ),
             Positioned(
               left: 40,
               bottom: 100,
               child: Text(
-                '01 мая 2021',
+                item.getById(id).passDate,
                 style: TextStyle(fontSize: 14, color: Colors.black),
               ),
             ),
@@ -110,7 +113,7 @@ class CardScreen extends StatelessWidget {
               left: 40,
               bottom: 122,
               child: Text(
-                '14:40-14:45',
+                item.getById(id).passTime,
                 style: TextStyle(fontSize: 20, color: Colors.black),
               ),
             ),
@@ -129,7 +132,7 @@ class CardScreen extends StatelessWidget {
               left: 40,
               bottom: 194,
               child: Text(
-                '01 мая 2021',
+                item.getById(id).currentDate,
                 style: TextStyle(fontSize: 14, color: Colors.black),
               ),
             ),
@@ -137,7 +140,7 @@ class CardScreen extends StatelessWidget {
               left: 40,
               bottom: 216,
               child: Text(
-                '14:34:43',
+                item.getById(id).currentTime,
                 style: TextStyle(fontSize: 20, color: Colors.black),
               ),
             ),
@@ -156,7 +159,7 @@ class CardScreen extends StatelessWidget {
               bottom: 304,
               left: 40,
               child: Text(
-                'А354МК|185',
+                item.getById(id).name,
                 style: TextStyle(
                     fontSize: 28,
                     color: Colors.black,

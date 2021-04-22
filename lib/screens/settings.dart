@@ -9,7 +9,7 @@ class SettingsScreen extends StatelessWidget {
   final String ip = "172.172.1.128";
   @override
   Widget build(BuildContext context) {
-    var item2 = context.read<CardModel>();
+    var item = context.read<CardModel>();
 
     return GestureDetector(
       onTap: () {

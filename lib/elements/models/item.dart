@@ -17,6 +17,8 @@ class Item {
   String _name = "";
   String _image = "";
   String _statusResult = "";
+  String _statusColor = "";
+  bool _isGotFromAPI = false;
 
   get isEnter => _isEnter;
   get idOnServer => _idOnServer;
@@ -30,6 +32,8 @@ class Item {
   get currentPhoto => _currentPhoto;
   get image => _image;
   get statusResult => _statusResult;
+  get isGotFromAPI => _isGotFromAPI;
+  get statusColor => _statusColor;
 
   set name(String name) {
     this._name = name;
@@ -68,12 +72,20 @@ class Item {
     this._type = type;
   }
 
+  set statusColor(String color) {
+    this._statusColor = "0xFF" + color.substring(1);
+  }
+
+  set isGotFromAPI(bool boolean) {
+    this._isGotFromAPI = boolean;
+  }
+
   set statusResult(String text) {
     this._statusResult = text;
   }
 
   set currentPhoto(File file) {
-    this._currentPhoto = new File(file.path);
+    this._currentPhoto = file;
   }
 
   String base64Encode(List<int> bytes) => base64.encode(bytes);
