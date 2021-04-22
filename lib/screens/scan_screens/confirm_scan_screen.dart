@@ -60,6 +60,12 @@ class _ConfirmScanState extends State<ConfirmScan> {
   @override
   void initState() {
     super.initState();
+    if (widget.qrCodeResult != null) {
+      parseQR = widget.qrCodeResult.split(", ");
+      numberOfCar = parseQR[0];
+      numberOfDoc = parseQR[1];
+    }
+
     // Проверка на наличие NFC
     NFC.isNDEFSupported.then((bool isSupported) {
       setState(() {
@@ -138,13 +144,18 @@ class _ConfirmScanState extends State<ConfirmScan> {
                     if (widget.qrCodeResult != null) {
                       Item cardItem2 = new Item();
                       item.add(cardItem2);
-                      parseQR = widget.qrCodeResult.split(", ");
-                      numberOfCar = parseQR[0];
-                      numberOfDoc = parseQR[1];
+                      cardItem.typeOfCheck = "qr";
+                      cardItem2.typeOfCheck = "qr";
                       item.postCertificateCheck(item.getLength() - 1,
                           numberOfCar, cardItem.direction);
                       item.postCertificateCheck(item.getLength() - 2,
                           numberOfDoc, cardItem2.direction);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()));
+                    } else if (widget.nfcCertificate != null) {
+                      cardItem.typeOfCheck = "nfc";
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -271,7 +282,7 @@ class _ConfirmScanState extends State<ConfirmScan> {
                                         padding:
                                             const EdgeInsets.only(top: 10.0),
                                         child: Text(
-                                          widget.qrCodeResult,
+                                          numberOfCar,
                                           style: TextStyle(
                                             fontSize: 28,
                                             color: ColorConstants.blackColor,
@@ -286,6 +297,17 @@ class _ConfirmScanState extends State<ConfirmScan> {
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: ColorConstants.greyColor,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 10.0),
+                                        child: Text(
+                                          numberOfDoc,
+                                          style: TextStyle(
+                                            fontSize: 28,
+                                            color: ColorConstants.blackColor,
                                           ),
                                         ),
                                       ),

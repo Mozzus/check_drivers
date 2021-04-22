@@ -18,6 +18,7 @@ class Item {
   String _image = "";
   String _statusResult = "";
   String _statusColor = "";
+  String _typeOfCheck = "";
   bool _isGotFromAPI = false;
 
   get isEnter => _isEnter;
@@ -34,6 +35,7 @@ class Item {
   get statusResult => _statusResult;
   get isGotFromAPI => _isGotFromAPI;
   get statusColor => _statusColor;
+  get typeOfCheck => _typeOfCheck;
 
   set name(String name) {
     this._name = name;
@@ -70,6 +72,10 @@ class Item {
 
   set type(String type) {
     this._type = type;
+  }
+
+  set typeOfCheck(String type) {
+    this._typeOfCheck = type;
   }
 
   set statusColor(String color) {

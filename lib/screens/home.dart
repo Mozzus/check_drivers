@@ -50,7 +50,8 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
-        elevation: 0.0,
+        elevation: 10.0,
+        shadowColor: Colors.black.withOpacity(0.5),
         toolbarHeight: 50,
         backgroundColor: Colors.white,
       ),
@@ -173,161 +174,173 @@ class InfoCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 15, right: 15, top: 16),
           child: ScrollOnExpand(
-            child: Card(
-              elevation: 0,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12.0))),
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                children: <Widget>[
-                  ExpandablePanel(
-                    theme: const ExpandableThemeData(
-                      headerAlignment: ExpandablePanelHeaderAlignment.center,
-                      tapBodyToExpand: false,
-                      tapBodyToCollapse: false,
-                      hasIcon: false,
-                    ),
-                    header: Container(
-                      color: ColorConstants.background,
-                      height: 48,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20.0,
-                            ),
-                            child: Text(
-                              "Обозначение цветами",
-                              style: TextStyle(
-                                color: ColorConstants.blackColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          ExpandableIcon(
-                            theme: const ExpandableThemeData(
-                              iconColor: ColorConstants.greyColor,
-                              expandIcon: MyFlutterApp.eye,
-                              collapseIcon: MyFlutterApp.eye_slash,
-                              iconSize: 20,
-                              iconPadding: EdgeInsets.only(right: 26),
-                              hasIcon: false,
-                            ),
-                          ),
-                        ],
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFF2D2725).withOpacity(0.08),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Card(
+                elevation: 0,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  children: <Widget>[
+                    ExpandablePanel(
+                      theme: const ExpandableThemeData(
+                        headerAlignment: ExpandablePanelHeaderAlignment.center,
+                        tapBodyToExpand: false,
+                        tapBodyToCollapse: false,
+                        hasIcon: false,
                       ),
-                    ),
-                    collapsed: Container(),
-                    expanded: Container(
-                      margin: EdgeInsets.only(
-                        top: 2,
-                      ),
-                      height: 130,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Column(
+                      header: Container(
+                        color: ColorConstants.background,
+                        height: 48,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 15,
-                                  width: 15,
-                                  decoration: BoxDecoration(
-                                    color: ColorConstants.greenColor,
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    "Доступ разрешен",
-                                    style: TextStyle(
-                                        color: ColorConstants.greenColor,
-                                        fontSize: 14),
-                                  ),
-                                ),
-                              ],
-                            ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 14.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 15,
-                                    width: 15,
-                                    decoration: BoxDecoration(
-                                      color: ColorConstants.orangeColor,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      "Доступ разрешен с ограничениями",
-                                      style: TextStyle(
-                                          color: ColorConstants.orangeColor,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                ],
+                              padding: const EdgeInsets.only(
+                                left: 20.0,
+                              ),
+                              child: Text(
+                                "Обозначение цветами",
+                                style: TextStyle(
+                                  color: ColorConstants.blackColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 14.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 15,
-                                    width: 15,
-                                    decoration: BoxDecoration(
-                                      color: ColorConstants.redColor,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      "Доступ запрещен",
-                                      style: TextStyle(
-                                          color: ColorConstants.redColor,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 14.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 15,
-                                    width: 15,
-                                    decoration: BoxDecoration(
-                                      color: ColorConstants.greyColor,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      "Данные отсутствуют",
-                                      style: TextStyle(
-                                          color: ColorConstants.greyColor,
-                                          fontSize: 14),
-                                    ),
-                                  ),
-                                ],
+                            ExpandableIcon(
+                              theme: const ExpandableThemeData(
+                                iconColor: ColorConstants.greyColor,
+                                expandIcon: MyFlutterApp.eye,
+                                collapseIcon: MyFlutterApp.eye_slash,
+                                iconSize: 20,
+                                iconPadding: EdgeInsets.only(right: 26),
+                                hasIcon: false,
                               ),
                             ),
                           ],
                         ),
                       ),
+                      collapsed: Container(),
+                      expanded: Container(
+                        margin: EdgeInsets.only(
+                          top: 2,
+                        ),
+                        height: 130,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 15,
+                                    width: 15,
+                                    decoration: BoxDecoration(
+                                      color: ColorConstants.greenColor,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      "Доступ разрешен",
+                                      style: TextStyle(
+                                          color: ColorConstants.greenColor,
+                                          fontSize: 14),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 14.0),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 15,
+                                      width: 15,
+                                      decoration: BoxDecoration(
+                                        color: ColorConstants.orangeColor,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Text(
+                                        "Доступ разрешен с ограничениями",
+                                        style: TextStyle(
+                                            color: ColorConstants.orangeColor,
+                                            fontSize: 14),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 14.0),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 15,
+                                      width: 15,
+                                      decoration: BoxDecoration(
+                                        color: ColorConstants.redColor,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Text(
+                                        "Доступ запрещен",
+                                        style: TextStyle(
+                                            color: ColorConstants.redColor,
+                                            fontSize: 14),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 14.0),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 15,
+                                      width: 15,
+                                      decoration: BoxDecoration(
+                                        color: ColorConstants.greyColor,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Text(
+                                        "Данные отсутствуют",
+                                        style: TextStyle(
+                                            color: ColorConstants.greyColor,
+                                            fontSize: 14),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -358,7 +371,6 @@ class _CardItem extends StatelessWidget {
       child: Consumer<CardModel>(builder: (context, card, child) {
         return item.isGotFromAPI
             ?
-
             //
             // Карточка полученная от сервера
             //
@@ -367,6 +379,14 @@ class _CardItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: ColorConstants.greenColor,
                   borderRadius: BorderRadius.circular(8.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFF2D2725).withOpacity(0.08),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
                   gradient: new LinearGradient(stops: [
                     0.01,
                     0.01
@@ -568,6 +588,14 @@ class _CardItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: ColorConstants.greenColor,
                   borderRadius: BorderRadius.circular(8.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFF2D2725).withOpacity(0.08),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
                   gradient: new LinearGradient(
                       stops: [0.01, 0.01],
                       colors: [ColorConstants.greyColor, Colors.white]),
@@ -673,7 +701,7 @@ class _CardItem extends StatelessWidget {
                                                       style: TextStyle(
                                                         fontSize: 14,
                                                         color: ColorConstants
-                                                            .greyColor,
+                                                            .blackColor,
                                                       ),
                                                     ),
                                                   ),
@@ -691,27 +719,45 @@ class _CardItem extends StatelessWidget {
                           )
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Container(
-                            height: 90,
-                            width: 102,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                            ),
-                            child: item == null
-                                ? null
-                                : (item.currentPhoto == null
-                                    ? null
-                                    : Image.file(
-                                        File(item.currentPhoto.path),
-                                        fit: BoxFit.fitWidth,
-                                      )),
-                          ),
-                        ),
-                      )
+                      item.typeOfCheck == "qr"
+                          ? Padding(
+                              padding: const EdgeInsets.only(right: 25.0),
+                              child: SvgPicture.asset(
+                                "assets/images/home/qr_icon.svg",
+                                height: 76,
+                                width: 76,
+                              ),
+                            )
+                          : item.typeOfCheck == "nfc"
+                              ? Padding(
+                                  padding: const EdgeInsets.only(right: 25.0),
+                                  child: SvgPicture.asset(
+                                    "assets/images/home/nfc_icon.svg",
+                                    height: 76,
+                                    width: 76,
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Container(
+                                      height: 90,
+                                      width: 102,
+                                      decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                      ),
+                                      child: item == null
+                                          ? null
+                                          : (item.currentPhoto == null
+                                              ? null
+                                              : Image.file(
+                                                  File(item.currentPhoto.path),
+                                                  fit: BoxFit.fitWidth,
+                                                )),
+                                    ),
+                                  ),
+                                ),
                     ],
                   ),
                 ),

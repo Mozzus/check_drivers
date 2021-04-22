@@ -47,13 +47,15 @@ class CardScreen extends StatelessWidget {
             automaticallyImplyLeading: false,
           ),
           body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             child: item == null
                 ? null
                 : (item.getById(id).currentPhoto == null
                     ? null
                     : Image.file(
                         File(item.getById(id).currentPhoto.path),
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.cover,
                       )),
           ),
         ),
