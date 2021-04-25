@@ -1,16 +1,18 @@
 import 'package:check_drivers/constants/colors.dart';
-import 'package:check_drivers/elements/card.dart';
+import 'package:check_drivers/elements/requests.dart';
 import 'package:check_drivers/screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 
-class SettingsScreen extends StatelessWidget {
-  final String ip = "172.172.1.128";
+class SettingsScreen extends StatefulWidget {
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  String _currentUrl;
+
   @override
   Widget build(BuildContext context) {
-    var item = context.read<CardModel>();
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -64,32 +66,44 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 12.0),
-                      child: Container(
-                        height: 44,
-                        width: MediaQuery.of(context).size.width - 40,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          color: ColorConstants.tertiaryColor,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 7.0, top: 12, bottom: 12),
-                          child: TextFormField(
-                            cursorColor: ColorConstants.greyColor,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: new InputDecoration(
-                              contentPadding: EdgeInsets.all(9.0),
-                              border: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              isDense: false,
-                              hintText: "Введите ip-адрес подключения",
-                              hintStyle: TextStyle(),
-                            ),
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: 14, color: ColorConstants.blackColor),
-                            // onSaved: (val) => _email = val,
-                            // validator: (val) => val == "ru" ? null : "",
+                      child: Form(
+                        autovalidateMode: AutovalidateMode.always,
+                        onChanged: () {
+                          Form.of(primaryFocus.context).save();
+                        },
+                        child: Container(
+                          height: 44,
+                          width: MediaQuery.of(context).size.width - 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: ColorConstants.tertiaryColor,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 7.0, top: 12, bottom: 12),
+                            child: TextFormField(
+                                cursorColor: ColorConstants.greyColor,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: new InputDecoration(
+                                  contentPadding: EdgeInsets.all(9.0),
+                                  border: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  isDense: false,
+                                  hintText: Request.commonUrl == null
+                                      ? "Введите ip-адрес подключения"
+                                      : Request.commonUrl,
+                                  hintStyle: TextStyle(
+                                      color: Request.commonUrl == null
+                                          ? Colors.grey
+                                          : Colors.black),
+                                ),
+                                maxLines: 1,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: ColorConstants.blackColor),
+                                onSaved: (val) {
+                                  _currentUrl = '$val';
+                                }),
                           ),
                         ),
                       ),
@@ -117,7 +131,13 @@ class SettingsScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            //Метод сохранения адреса API
+                            //
+                            setState(() {
+                              Request.commonUrl = _currentUrl;
+                            });
+                          },
                         ),
                       ),
                     ),

@@ -33,8 +33,8 @@ class _ConfirmScanState extends State<ConfirmScan> {
   bool _isEnter = true;
   bool _isExit = false;
   List<String> parseQR;
-  String numberOfCar;
-  String numberOfDoc;
+  String numberOfCar = "QR некорректен";
+  String numberOfDoc = "QR некорректен";
 
   void _tapOnExit() {
     setState(() {
@@ -60,10 +60,13 @@ class _ConfirmScanState extends State<ConfirmScan> {
   @override
   void initState() {
     super.initState();
+
     if (widget.qrCodeResult != null) {
-      parseQR = widget.qrCodeResult.split(", ");
-      numberOfCar = parseQR[0];
-      numberOfDoc = parseQR[1];
+      if (widget.qrCodeResult.contains(",")) {
+        parseQR = widget.qrCodeResult.split(", ");
+        numberOfCar = parseQR[0];
+        numberOfDoc = parseQR[1];
+      }
     }
 
     // Проверка на наличие NFC

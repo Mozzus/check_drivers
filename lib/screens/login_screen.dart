@@ -1,10 +1,8 @@
 import 'package:check_drivers/constants/colors.dart';
-import 'package:check_drivers/elements/card.dart';
 import 'package:check_drivers/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,7 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _email;
+  String _email = "Nikitin.Al@gazprom-neft.ru";
 
   String _password;
 
@@ -20,7 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var card = context.read<CardModel>();
     return WillPopScope(
       onWillPop: () async => false,
       child: GestureDetector(
@@ -76,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   padding: const EdgeInsets.only(
                                       left: 16.0, top: 12, bottom: 12),
                                   child: TextFormField(
+                                    initialValue: _email,
                                     cursorColor: ColorConstants.greyColor,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: new InputDecoration(
@@ -87,7 +85,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontSize: 14,
                                         color: ColorConstants.blackColor),
                                     onSaved: (val) => _email = val,
-                                    validator: (val) => val == "ru" ? null : "",
+                                    validator: (val) =>
+                                        val == "Nikitin.Al@gazprom-neft.ru"
+                                            ? null
+                                            : "",
                                   ),
                                 ),
                               ),

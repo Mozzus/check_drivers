@@ -239,7 +239,7 @@ class _MainScanState extends State with WidgetsBindingObserver {
                                 });
                               });
                               Future<void> x =
-                                  Future.delayed(Duration(milliseconds: 2500));
+                                  Future.delayed(Duration(milliseconds: 3000));
                               x.then((value) => _setTapped());
                             },
                           )
@@ -267,7 +267,7 @@ class _MainScanState extends State with WidgetsBindingObserver {
                                                 )));
                                   });
                                   Future<void> x = Future.delayed(
-                                      Duration(milliseconds: 2500));
+                                      Duration(milliseconds: 3000));
                                   x.then((value) => _setTapped());
                                 },
                               )

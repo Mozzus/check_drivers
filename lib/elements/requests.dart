@@ -6,16 +6,13 @@ import 'models/unit.dart';
 class Request {
   // static final String url =
   //     'https://my-json-server.typicode.com/mozzus/demo/card/';
+  static String commonUrl;
 
-  static final String url = 'http://1531a9f25a85.ngrok.io/api/v1/photos/check';
-  static final String urlCertificate =
-      'http://1531a9f25a85.ngrok.io/api/v1/certificates/check';
-  static final String urlGetDriver =
-      'http://1531a9f25a85.ngrok.io/api/v1/events/driver/';
-  static final String urlGetCar =
-      'http://1531a9f25a85.ngrok.io/api/v1/events/car/';
-  static final String urlGet10 =
-      'http://1531a9f25a85.ngrok.io/api/v1/events?limit=10&offset=0';
+  static final String url = commonUrl + '/api/v1/photos/check';
+  static final String urlCertificate = commonUrl + '/api/v1/certificates/check';
+  static final String urlGetDriver = commonUrl + '/api/v1/events/driver/';
+  static final String urlGetCar = commonUrl + '/api/v1/events/car/';
+  static final String urlGet10 = commonUrl + '/api/v1/events?limit=10&offset=0';
 
   static Future<CardUnit> postCardInformation(String type, String direction,
       [String photo]) async {

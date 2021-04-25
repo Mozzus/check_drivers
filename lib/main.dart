@@ -1,5 +1,4 @@
 import 'package:check_drivers/elements/card.dart';
-import 'package:check_drivers/screens/home.dart';
 import 'package:check_drivers/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Check Documents App',
         theme: ThemeData(fontFamily: "Inter"),
-        home: HomeScreen(),
+        home: LoginScreen(),
       ),
     );
   }

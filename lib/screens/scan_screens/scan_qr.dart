@@ -35,7 +35,7 @@ class _QRScanState extends State<QRScan> {
               fit: BoxFit.contain,
             ),
           ),
-          Expanded(flex: 2, child: _buildQrView(context)),
+          Expanded(flex: 3, child: _buildQrView(context)),
         ],
       ),
     );
