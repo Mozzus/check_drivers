@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:check_drivers/constants/colors.dart';
-import 'package:check_drivers/elements/logic/card.dart';
 import 'package:check_drivers/screens/scan_screens/scan_car.dart';
 import 'package:check_drivers/screens/scan_screens/scan_human.dart';
 import 'package:check_drivers/screens/scan_screens/scan_qr.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_face/image_face.dart';
-import 'package:provider/provider.dart';
 
 import 'confirm_scan_screen.dart';
 
@@ -119,12 +117,8 @@ class _MainScanState extends State with WidgetsBindingObserver {
 
   Future<void> checkFace() async {
     try {
-      print('start check');
       MainScan.hasFace = await ImageFace.hasFace(File(checkFaceFile.path));
-      print('end check');
-    } on PlatformException {
-      print('Failed to get faces');
-    }
+    } on PlatformException {}
     if (!mounted) return;
   }
 
@@ -154,7 +148,6 @@ class _MainScanState extends State with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    var item = context.read<CardModel>();
     return Scaffold(
         appBar: AppBar(
           title: Row(
@@ -168,8 +161,6 @@ class _MainScanState extends State with WidgetsBindingObserver {
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    print("ITEM LENGTH IS --------" +
-                        item.getLength().toString());
                     Navigator.pop(context);
                   },
                 ),
@@ -317,7 +308,6 @@ class _MainScanState extends State with WidgetsBindingObserver {
                               });
                             }
                             if (_isHuman) _tapOnCar();
-                            // item.changeItemType("Car");
                           },
                         ),
                       ),
@@ -348,7 +338,6 @@ class _MainScanState extends State with WidgetsBindingObserver {
                               });
                             }
                             if (_isCar) _tapOnHuman();
-                            // item.changeItemType("Driver");
                           },
                         ),
                       ),
@@ -421,8 +410,6 @@ class _MainScanState extends State with WidgetsBindingObserver {
 }
 
 noFaceMessage(BuildContext context) {
-  // var item = context.select<CardModel, Item>((value) => value.getById(0));
-
   Widget okButton = Container(
     height: 48,
     width: 300,
@@ -476,10 +463,7 @@ noFaceMessage(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      // return Consumer<CardModel>(builder: (context, cart, child) {
-      //   if (cart.getById(0).hasFace)
       return alert;
-      // });
     },
   );
 }

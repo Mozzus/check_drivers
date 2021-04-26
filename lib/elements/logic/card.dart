@@ -1,12 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:check_drivers/elements/models/item.dart';
 import 'package:check_drivers/elements/models/list_units.dart';
 import 'package:check_drivers/elements/logic/requests.dart';
-import 'package:check_drivers/screens/scan_screens/scan.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../models/unit.dart';
 
@@ -30,14 +27,9 @@ class CardModel extends ChangeNotifier {
         getById(id).statusColor = _unit.status.statusColor;
         getById(id).name = _unit.name;
         getById(id).type = _unit.type;
-        if (_unit.image != null) {
-          final decodedBytes = base64Decode(_unit.image);
-          print(_unit.image);
-          MainScan.faceFile.writeAsBytesSync(decodedBytes);
-          getById(id).currentPhoto = MainScan.faceFile;
-        }
+
         // Для отображения ссылочного фото
-        //         if (_unit.image != null) {
+        //   if (_unit.image != null) {
 
         //   print(_unit.image);
         //   Uint8List _base64;
@@ -69,11 +61,6 @@ class CardModel extends ChangeNotifier {
             getById(_items.length - 1).name = x.name;
             getById(_items.length - 1).type = x.type;
             getById(_items.length - 1).isGotFromAPI = true;
-            if (x.image != null) {
-              final decodedBytes = base64Decode(x.image);
-              MainScan.faceFile.writeAsBytesSync(decodedBytes);
-              getById(_items.length - 1).currentPhoto = MainScan.faceFile;
-            }
           }
         }
 
@@ -94,11 +81,6 @@ class CardModel extends ChangeNotifier {
           getById(id).currentDate = _unit.currentDate;
           getById(id).statusResult = _unit.status.statusText;
           getById(id).statusColor = _unit.status.statusColor;
-          if (_unit.image != null) {
-            final decodedBytes = base64Decode(_unit.image);
-            MainScan.faceFile.writeAsBytesSync(decodedBytes);
-            getById(id).currentPhoto = MainScan.faceFile;
-          }
           getById(id).isGotFromAPI = true;
           notifyListeners();
         });
@@ -111,11 +93,6 @@ class CardModel extends ChangeNotifier {
           getById(id).currentDate = _unit.currentDate;
           getById(id).statusResult = _unit.status.statusText;
           getById(id).statusColor = _unit.status.statusColor;
-          if (_unit.image != null) {
-            final decodedBytes = base64Decode(_unit.image);
-            MainScan.faceFile.writeAsBytesSync(decodedBytes);
-            getById(id).currentPhoto = MainScan.faceFile;
-          }
           getById(id).isGotFromAPI = true;
           notifyListeners();
         });
@@ -178,15 +155,6 @@ class CardModel extends ChangeNotifier {
 
   void add(Item item) {
     _items.add(item);
-    notifyListeners();
-  }
-
-  void removeLastItem() {
-    _items.removeAt(_position);
-  }
-
-  void removeAll() {
-    _items.clear();
     notifyListeners();
   }
 }

@@ -181,7 +181,7 @@ class InfoCard extends StatelessWidget {
                     color: Color(0xFF2D2725).withOpacity(0.08),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: Offset(0, 3),
                   ),
                 ],
               ),
@@ -384,7 +384,7 @@ class _CardItem extends StatelessWidget {
                       color: Color(0xFF2D2725).withOpacity(0.08),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
+                      offset: Offset(0, 3),
                     ),
                   ],
                   gradient: new LinearGradient(stops: [
@@ -619,7 +619,7 @@ class _CardItem extends StatelessWidget {
                       color: Color(0xFF2D2725).withOpacity(0.08),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
+                      offset: Offset(0, 3),
                     ),
                   ],
                   gradient: new LinearGradient(

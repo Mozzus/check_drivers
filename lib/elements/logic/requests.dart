@@ -4,8 +4,6 @@ import '../models/list_units.dart';
 import '../models/unit.dart';
 
 class Request {
-  // static final String url =
-  //     'https://my-json-server.typicode.com/mozzus/demo/card/';
   static String commonUrl;
 
   static final String url = commonUrl + '/api/v1/photos/check';
@@ -21,8 +19,6 @@ class Request {
       [String photo]) async {
     try {
       var dio = Dio(BaseOptions(contentType: Headers.jsonContentType));
-      // dio.options.headers['Content-Type'] = "application/json";
-      // dio.options.headers['accept'] = "application/json";
       Response response = await dio.post(url, data: {
         "photo": photo,
         "object-type": type,
