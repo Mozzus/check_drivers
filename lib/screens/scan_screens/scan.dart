@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:check_drivers/constants/colors.dart';
-import 'package:check_drivers/elements/card.dart';
+import 'package:check_drivers/elements/logic/card.dart';
 import 'package:check_drivers/screens/scan_screens/scan_car.dart';
 import 'package:check_drivers/screens/scan_screens/scan_human.dart';
 import 'package:check_drivers/screens/scan_screens/scan_qr.dart';
@@ -114,7 +114,7 @@ class _MainScanState extends State with WidgetsBindingObserver {
     checkFaceFile =
         await FlutterNativeImage.cropImage(photoFile.path, 300, 130, 230, 180);
     MainScan.faceFile =
-        await FlutterNativeImage.cropImage(photoFile.path, 50, 60, 600, 350);
+        await FlutterNativeImage.cropImage(photoFile.path, 110, 70, 600, 350);
   }
 
   Future<void> checkFace() async {

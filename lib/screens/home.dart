@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:check_drivers/constants/colors.dart';
 import 'package:check_drivers/constants/my_flutter_app_icons.dart';
-import 'package:check_drivers/elements/card.dart';
+import 'package:check_drivers/elements/logic/card.dart';
 import 'package:check_drivers/elements/models/item.dart';
 import 'package:check_drivers/screens/card_screen.dart';
 import 'package:check_drivers/screens/scan_screens/confirm_scan_screen.dart';
@@ -498,11 +498,11 @@ class _CardItem extends StatelessWidget {
                                               padding: const EdgeInsets.only(
                                                   top: 2.0),
                                               child: Text(
-                                                card.getById(id).currentDate +
+                                                card.getById(id).currentTime +
                                                     " " +
                                                     card
                                                         .getById(id)
-                                                        .currentTime,
+                                                        .currentDate,
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color:
@@ -554,27 +554,53 @@ class _CardItem extends StatelessWidget {
                           )
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Container(
-                            height: 90,
-                            width: 102,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                            ),
-                            child: item == null
-                                ? null
-                                : (item.currentPhoto == null
-                                    ? null
-                                    : Image.file(
-                                        File(item.currentPhoto.path),
-                                        fit: BoxFit.fitWidth,
-                                      )),
-                          ),
-                        ),
-                      )
+                      item.typeOfCheck == "qr"
+                          ? Padding(
+                              padding: const EdgeInsets.only(right: 25.0),
+                              child: SvgPicture.asset(
+                                "assets/images/home/qr_icon.svg",
+                                height: 76,
+                                width: 76,
+                              ),
+                            )
+                          : item.typeOfCheck == "nfc"
+                              ? Padding(
+                                  padding: const EdgeInsets.only(right: 25.0),
+                                  child: SvgPicture.asset(
+                                    "assets/images/home/nfc_icon.svg",
+                                    height: 76,
+                                    width: 76,
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Container(
+                                        height: 90,
+                                        width: 102,
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                        ),
+                                        child: item == null
+                                            ? null
+                                            : (item.currentPhoto == null
+                                                ? null
+                                                : Image.file(
+                                                    File(card
+                                                        .getById(id)
+                                                        .currentPhoto
+                                                        .path),
+                                                    fit: BoxFit.fitWidth,
+                                                  ))
+                                        //Для отображения ссылочного фото
+                                        // Image.memory(
+                                        //     card.getById(id).referencePhoto,
+                                        //     fit: BoxFit.fitHeight ,
+                                        //   )),
+                                        ),
+                                  ),
+                                )
                     ],
                   ),
                 ),

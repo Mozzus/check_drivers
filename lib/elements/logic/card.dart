@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:check_drivers/elements/models/item.dart';
 import 'package:check_drivers/elements/models/list_units.dart';
-import 'package:check_drivers/elements/requests.dart';
+import 'package:check_drivers/elements/logic/requests.dart';
+import 'package:check_drivers/screens/scan_screens/scan.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
-import 'models/unit.dart';
+import '../models/unit.dart';
 
 class CardModel extends ChangeNotifier {
   // Список карточек
@@ -28,10 +30,22 @@ class CardModel extends ChangeNotifier {
         getById(id).statusColor = _unit.status.statusColor;
         getById(id).name = _unit.name;
         getById(id).type = _unit.type;
-        // final decodedBytes = base64Decode(_unit.image);
-        // var file = File("1.png");
-        // file.writeAsBytesSync(decodedBytes);
-        // getById(id).currentPhoto = file;
+        if (_unit.image != null) {
+          final decodedBytes = base64Decode(_unit.image);
+          print(_unit.image);
+          MainScan.faceFile.writeAsBytesSync(decodedBytes);
+          getById(id).currentPhoto = MainScan.faceFile;
+        }
+        // Для отображения ссылочного фото
+        //         if (_unit.image != null) {
+
+        //   print(_unit.image);
+        //   Uint8List _base64;
+
+        //   _base64 = Base64Decoder().convert(_unit.image);
+
+        //   getById(id).referencePhoto = _base64;
+        // }
         getById(id).isGotFromAPI = true;
         notifyListeners();
       });
@@ -55,13 +69,14 @@ class CardModel extends ChangeNotifier {
             getById(_items.length - 1).name = x.name;
             getById(_items.length - 1).type = x.type;
             getById(_items.length - 1).isGotFromAPI = true;
+            if (x.image != null) {
+              final decodedBytes = base64Decode(x.image);
+              MainScan.faceFile.writeAsBytesSync(decodedBytes);
+              getById(_items.length - 1).currentPhoto = MainScan.faceFile;
+            }
           }
         }
 
-        // final decodedBytes = base64Decode(_unit.image);
-        // var file = File("1.png");
-        // file.writeAsBytesSync(decodedBytes);
-        // getById(id).currentPhoto = file;
         notifyListeners();
       });
     });
@@ -69,19 +84,21 @@ class CardModel extends ChangeNotifier {
 
   void getCurrentCardCheck(int id, String idOnServer) {
     Future.delayed(Duration(milliseconds: 1000)).then((value) {
-      if (getById(id).type == "Driver") {
+      if (getById(id).type == "driver") {
         Request.getCurrentDriverCard(idOnServer).then((value) {
           _unit = value;
           getById(id).passDate = _unit.passDate;
           getById(id).passTime = _unit.passTime;
+          getById(id).name = _unit.name;
           getById(id).currentTime = _unit.currentTime;
           getById(id).currentDate = _unit.currentDate;
           getById(id).statusResult = _unit.status.statusText;
           getById(id).statusColor = _unit.status.statusColor;
-          // final decodedBytes = base64Decode(_unit.image);
-          // var file = File("1.png");
-          // file.writeAsBytesSync(decodedBytes);
-          // getById(id).currentPhoto = file;
+          if (_unit.image != null) {
+            final decodedBytes = base64Decode(_unit.image);
+            MainScan.faceFile.writeAsBytesSync(decodedBytes);
+            getById(id).currentPhoto = MainScan.faceFile;
+          }
           getById(id).isGotFromAPI = true;
           notifyListeners();
         });
@@ -94,10 +111,11 @@ class CardModel extends ChangeNotifier {
           getById(id).currentDate = _unit.currentDate;
           getById(id).statusResult = _unit.status.statusText;
           getById(id).statusColor = _unit.status.statusColor;
-          // final decodedBytes = base64Decode(_unit.image);
-          // var file = File("1.png");
-          // file.writeAsBytesSync(decodedBytes);
-          // getById(id).currentPhoto = file;
+          if (_unit.image != null) {
+            final decodedBytes = base64Decode(_unit.image);
+            MainScan.faceFile.writeAsBytesSync(decodedBytes);
+            getById(id).currentPhoto = MainScan.faceFile;
+          }
           getById(id).isGotFromAPI = true;
           notifyListeners();
         });
@@ -105,10 +123,11 @@ class CardModel extends ChangeNotifier {
     });
   }
 
-  void postCertificateCheck(int id, String certificate, String direction,
+  void postCertificateDriverCheck(int id, String certificate, String direction,
       [String photo]) {
     Future.delayed(Duration(milliseconds: 1000)).then((value) {
-      Request.postQRCertificate(certificate, direction).then((value) {
+      Request.postQRCertificateDriver(certificate, direction)
+          .then((value) async {
         _unit = value;
         getById(id).passDate = _unit.passDate;
         getById(id).passTime = _unit.passTime;
@@ -119,73 +138,38 @@ class CardModel extends ChangeNotifier {
         getById(id).statusColor = _unit.status.statusColor;
         getById(id).name = _unit.name;
         getById(id).type = _unit.type;
-        // final decodedBytes = base64Decode(_unit.image);
-        // var file = File("1.png");
-        // file.writeAsBytesSync(decodedBytes);
-        // getById(id).currentPhoto = file;
         getById(id).isGotFromAPI = true;
         notifyListeners();
       });
     });
   }
 
-  // Future<CardUnit> postCertificate(String certificate, String direction) async {
-  //   var formData = FormData.fromMap(
-  //       {"certificate": certificate, "direction-type": direction});
-  //   try {
-  //     var dio = Dio();
-  //     Response response = await dio.get(url);
-  //     print(response.data);
-  //     return CardUnit.fromJson(response.data[0]);
-  //   } on DioError catch (e) {
-  //     print(e);
-  //   }
-  // }
-
-  // void postCertificateCheck(int id, String certificate, String direction) {
-  //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
-  //     postCertificate(certificate, direction).then((value) {
-  //       _unit = value;
-  //       getById(id).passDate = _unit.passDate;
-  //       getById(id).passTime = _unit.passTime;
-  //       getById(id).name = _unit.name;
-  //       getById(id).idOnServer = _unit.id;
-  //       // final decodedBytes = base64Decode(_unit.image);
-  //       // var file = File("1.png");
-  //       // file.writeAsBytesSync(decodedBytes);
-  //       // getById(id).currentPhoto = file;
-  //       _isChange = true;
-  //       notifyListeners();
-  //     });
-  //   });
-  // }
-
-  // Future<CardUnit> getCardInformation() async {
-  //   try {
-  //     var dio = Dio();
-  //     Response response = await dio.get(url);
-  //     print(response.data);
-  //     return CardUnit.fromJson(response.data[0]);
-  //   } on DioError catch (e) {
-  //     print(e);
-  //   }
-  // }
+  void postCertificateCarCheck(int id, String certificate, String direction,
+      [String photo]) {
+    Future.delayed(Duration(milliseconds: 1000)).then((value) {
+      Request.postQRCertificateCarNumber(certificate, direction)
+          .then((value) async {
+        _unit = value;
+        getById(id).passDate = _unit.passDate;
+        getById(id).passTime = _unit.passTime;
+        getById(id).currentTime = _unit.currentTime;
+        getById(id).currentDate = _unit.currentDate;
+        getById(id).idOnServer = _unit.id;
+        getById(id).statusResult = _unit.status.statusText;
+        getById(id).statusColor = _unit.status.statusColor;
+        getById(id).name = _unit.name;
+        getById(id).type = _unit.type;
+        getById(id).isGotFromAPI = true;
+        notifyListeners();
+      });
+    });
+  }
 
   CardUnit getUnit() => _unit;
 
   Item getById(int id) => _items.elementAt(id);
 
   int getLength() => _items.length;
-
-  // void changeState() {
-  //   Future.delayed(Duration(milliseconds: 1000)).then((value) {
-  //     getCardInformation().then((value) {
-  //       _unit = value;
-  //       _canChange = true;
-  //       notifyListeners();
-  //     });
-  //   });
-  // }
 
   void setImageToCard(File file, Item item) {
     item.currentPhoto = file;

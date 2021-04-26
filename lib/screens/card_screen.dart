@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:check_drivers/constants/colors.dart';
-import 'package:check_drivers/elements/card.dart';
+import 'package:check_drivers/elements/logic/card.dart';
 import 'package:flutter/material.dart';
 import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:provider/provider.dart';

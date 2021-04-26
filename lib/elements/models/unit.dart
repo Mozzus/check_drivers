@@ -24,6 +24,6 @@ class CardUnit {
         passDate = json["pass-date"],
         currentTime = json["event-time"],
         currentDate = json["event-date"],
-        image = json["current-photo"],
+        image = json["reference-photo"],
         status = Status.fromJson(json["status"]);
 }

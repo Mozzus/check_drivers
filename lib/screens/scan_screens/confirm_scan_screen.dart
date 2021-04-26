@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:check_drivers/constants/colors.dart';
-import 'package:check_drivers/elements/card.dart';
+import 'package:check_drivers/elements/logic/card.dart';
 import 'package:check_drivers/elements/models/item.dart';
 import 'package:check_drivers/screens/scan_screens/scan.dart';
 import 'package:flutter/material.dart';
@@ -137,21 +137,22 @@ class _ConfirmScanState extends State<ConfirmScan> {
                       cardItem.isEnter = true;
                     else
                       cardItem.isEnter = false;
-                    if (widget.faceResult != null) cardItem.type = "Driver";
-                    if (widget.carResult != null) cardItem.type = "Car";
-                    // final bytes =
-                    //     File(MainScan.faceFile.path).readAsBytesSync();
-                    // cardItem.image = cardItem.base64Encode(bytes);
-                    // cardItem.image = "awawdawdaw";
+                    if (widget.faceResult != null) cardItem.type = "driver";
+                    if (widget.carResult != null) cardItem.type = "car";
+                    if (MainScan.faceFile != null) {
+                      final bytes =
+                          File(MainScan.faceFile.path).readAsBytesSync();
+                      cardItem.image = cardItem.base64Encode(bytes);
+                    }
                     item.add(cardItem);
                     if (widget.qrCodeResult != null) {
                       Item cardItem2 = new Item();
                       item.add(cardItem2);
                       cardItem.typeOfCheck = "qr";
                       cardItem2.typeOfCheck = "qr";
-                      item.postCertificateCheck(item.getLength() - 1,
+                      item.postCertificateDriverCheck(item.getLength() - 1,
                           numberOfCar, cardItem.direction);
-                      item.postCertificateCheck(item.getLength() - 2,
+                      item.postCertificateCarCheck(item.getLength() - 2,
                           numberOfDoc, cardItem2.direction);
                       Navigator.push(
                           context,

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import 'models/list_units.dart';
-import 'models/unit.dart';
+import '../models/list_units.dart';
+import '../models/unit.dart';
 
 class Request {
   // static final String url =
@@ -9,7 +9,10 @@ class Request {
   static String commonUrl;
 
   static final String url = commonUrl + '/api/v1/photos/check';
-  static final String urlCertificate = commonUrl + '/api/v1/certificates/check';
+  static final String urlCertificateDriver =
+      commonUrl + '/api/v1/certificates/check';
+  static final String urlCertificateCar =
+      commonUrl + '/api/v1/carnumbers/check';
   static final String urlGetDriver = commonUrl + '/api/v1/events/driver/';
   static final String urlGetCar = commonUrl + '/api/v1/events/car/';
   static final String urlGet10 = commonUrl + '/api/v1/events?limit=10&offset=0';
@@ -26,6 +29,7 @@ class Request {
         "direction-type": direction
       });
       print(response.data);
+      // print(photo);
       return CardUnit.fromJson(response.data);
     } on DioError catch (e) {
       print(e.response);
@@ -65,12 +69,25 @@ class Request {
     }
   }
 
-  static Future<CardUnit> postQRCertificate(
+  static Future<CardUnit> postQRCertificateDriver(
       String certificate, String direction) async {
     try {
       var dio = Dio(BaseOptions(contentType: Headers.jsonContentType));
-      Response response = await dio.post(urlCertificate,
+      Response response = await dio.post(urlCertificateDriver,
           data: {"certificate": certificate, "direction-type": direction});
+      print(response.data);
+      return CardUnit.fromJson(response.data);
+    } on DioError catch (e) {
+      print(e.response);
+    }
+  }
+
+  static Future<CardUnit> postQRCertificateCarNumber(
+      String certificate, String direction) async {
+    try {
+      var dio = Dio(BaseOptions(contentType: Headers.jsonContentType));
+      Response response = await dio.post(urlCertificateCar,
+          data: {"number": certificate, "direction-type": direction});
       print(response.data);
       return CardUnit.fromJson(response.data);
     } on DioError catch (e) {

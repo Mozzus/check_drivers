@@ -10,6 +10,7 @@ class Item {
   String _type = "";
   String _direction = "";
   File _currentPhoto;
+  Uint8List _referencePhoto;
   String _passDate = "";
   String _passTime = "";
   String _currentDate = "";
@@ -36,6 +37,7 @@ class Item {
   get isGotFromAPI => _isGotFromAPI;
   get statusColor => _statusColor;
   get typeOfCheck => _typeOfCheck;
+  get referencePhoto => _referencePhoto;
 
   set name(String name) {
     this._name = name;
@@ -63,6 +65,10 @@ class Item {
 
   set image(String image) {
     this._image = image;
+  }
+
+  set referencePhoto(Uint8List bytes) {
+    this._referencePhoto = bytes;
   }
 
   set isEnter(bool isEnter) {
