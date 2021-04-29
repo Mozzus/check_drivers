@@ -84,14 +84,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             child: TextFormField(
                                 cursorColor: ColorConstants.greyColor,
                                 keyboardType: TextInputType.emailAddress,
+                                initialValue: Request.commonUrl == null
+                                    ? null
+                                    : Request.commonUrl,
                                 decoration: new InputDecoration(
                                   contentPadding: EdgeInsets.all(9.0),
                                   border: InputBorder.none,
                                   disabledBorder: InputBorder.none,
                                   isDense: false,
-                                  hintText: Request.commonUrl == null
-                                      ? "Введите ip-адрес подключения"
-                                      : Request.commonUrl,
+                                  hintText: "Введите ip-адрес подключения",
                                   hintStyle: TextStyle(
                                       color: Request.commonUrl == null
                                           ? Colors.grey

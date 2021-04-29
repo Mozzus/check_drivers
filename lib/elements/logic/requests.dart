@@ -24,8 +24,6 @@ class Request {
         "object-type": type,
         "direction-type": direction
       });
-      print(response.data);
-      // print(photo);
       return CardUnit.fromJson(response.data);
     } on DioError catch (e) {
       print(e.response);
@@ -36,7 +34,6 @@ class Request {
     try {
       var dio = Dio();
       Response response = await dio.get(urlGet10);
-      print(response.data);
       return ListUnits.fromJson(response.data);
     } on DioError catch (e) {
       print(e);
@@ -47,7 +44,6 @@ class Request {
     try {
       var dio = Dio();
       Response response = await dio.get(urlGetDriver + idOnServer);
-      print(response.data);
       return CardUnit.fromJson(response.data);
     } on DioError catch (e) {
       print(e);
@@ -58,7 +54,6 @@ class Request {
     try {
       var dio = Dio();
       Response response = await dio.get(urlGetCar + idOnServer);
-      print(response.data);
       return CardUnit.fromJson(response.data);
     } on DioError catch (e) {
       print(e);
@@ -71,7 +66,6 @@ class Request {
       var dio = Dio(BaseOptions(contentType: Headers.jsonContentType));
       Response response = await dio.post(urlCertificateDriver,
           data: {"certificate": certificate, "direction-type": direction});
-      print(response.data);
       return CardUnit.fromJson(response.data);
     } on DioError catch (e) {
       print(e.response);
@@ -84,7 +78,6 @@ class Request {
       var dio = Dio(BaseOptions(contentType: Headers.jsonContentType));
       Response response = await dio.post(urlCertificateCar,
           data: {"number": certificate, "direction-type": direction});
-      print(response.data);
       return CardUnit.fromJson(response.data);
     } on DioError catch (e) {
       print(e.response);
