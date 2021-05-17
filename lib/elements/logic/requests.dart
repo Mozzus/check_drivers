@@ -6,20 +6,26 @@ import '../models/unit.dart';
 class Request {
   static String commonUrl;
 
-  static final String url = commonUrl + '/api/v1/photos/check';
-  static final String urlCertificateDriver =
-      commonUrl + '/api/v1/certificates/check';
-  static final String urlCertificateCar =
-      commonUrl + '/api/v1/carnumbers/check';
-  static final String urlGetDriver = commonUrl + '/api/v1/events/driver/';
-  static final String urlGetCar = commonUrl + '/api/v1/events/car/';
-  static final String urlGet10 = commonUrl + '/api/v1/events?limit=10&offset=0';
+  static String baseUrl;
+  static String urlCertificateDriver;
+  static String urlCertificateCar;
+  static String urlGetDriver;
+  static String urlGetCar;
+  static String urlGet10;
+
+  static void setCommonUrl(String url) {
+    baseUrl = url + '/api/v1/photos/check';
+    urlCertificateCar = url + '/api/v1/carnumbers/check';
+    urlGetDriver = url + '/api/v1/events/driver/';
+    urlGetCar = url + '/api/v1/events/car/';
+    urlGet10 = url + '/api/v1/events?limit=10&offset=0';
+  }
 
   static Future<CardUnit> postCardInformation(String type, String direction,
       [String photo]) async {
     try {
       var dio = Dio(BaseOptions(contentType: Headers.jsonContentType));
-      Response response = await dio.post(url, data: {
+      Response response = await dio.post(baseUrl, data: {
         "photo": photo,
         "object-type": type,
         "direction-type": direction

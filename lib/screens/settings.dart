@@ -137,6 +137,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             //
                             setState(() {
                               Request.commonUrl = _currentUrl;
+                              Request.setCommonUrl(_currentUrl);
                             });
                           },
                         ),

@@ -47,6 +47,7 @@ class CardModel extends ChangeNotifier {
   void get10cardsCheck() {
     Future.delayed(Duration(milliseconds: 1000)).then((value) {
       Request.get10cards().then((value) {
+        if (value == null) return;
         _listUnits = value;
         for (CardUnit x in _listUnits.list) {
           if (!_items.contains(x.id)) {
