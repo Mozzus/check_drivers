@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image/image.dart' as Img;
 import 'package:image_face/image_face.dart';
 
 import 'confirm_scan_screen.dart';
@@ -113,6 +114,20 @@ class _MainScanState extends State with WidgetsBindingObserver {
         await FlutterNativeImage.cropImage(photoFile.path, 300, 130, 230, 180);
     MainScan.faceFile =
         await FlutterNativeImage.cropImage(photoFile.path, 110, 70, 600, 350);
+
+    Img.Image image = Img.decodeImage(MainScan.faceFile.readAsBytesSync());
+
+    // Resize the image to a 120x? thumbnail (maintaining the aspect ratio).
+    Img.Image thumbnail = Img.copyResize(image, width: 320);
+
+    // Save the thumbnail as a PNG.
+    MainScan.faceFile..writeAsBytesSync(Img.encodePng(thumbnail));
+    // ImageProperties properties =
+    //     await FlutterNativeImage.getImageProperties(photoFile.path);
+    // MainScan.faceFile = await FlutterNativeImage.compressImage(photoFile.path,
+    //     quality: 80,
+    //     targetWidth: 600,
+    //     targetHeight: (properties.height * 600 / properties.width).round());
   }
 
   Future<void> checkFace() async {
