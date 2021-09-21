@@ -1,6 +1,6 @@
 # check_drivers
 
-A new Flutter project.
+Check drivers and cars by camera
 
 ## Getting Started
 
